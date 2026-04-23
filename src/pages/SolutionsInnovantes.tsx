@@ -3,10 +3,21 @@ import { Link } from "react-router-dom";
 import PageHero from "@/components/PageHero";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ScrollReveal from "@/components/ScrollReveal";
+import PhotoGallery, { GalleryImage } from "@/components/PhotoGallery";
 import bitumenImg from "@/assets/bitumen-work.jpg";
 import greenRoofImg from "@/assets/green-roof.jpg";
 import teamImg from "@/assets/team-construction.jpg";
 import ipeImg from "@/assets/ipe-terrace.jpg";
+
+type Solution = {
+  id: string;
+  icon: typeof Shield;
+  title: string;
+  images: GalleryImage[];
+  text: string;
+  points: string[];
+  ref?: string;
+};
 
 const solutions = [
   {
