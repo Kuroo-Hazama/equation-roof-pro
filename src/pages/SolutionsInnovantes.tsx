@@ -93,7 +93,7 @@ const SolutionsInnovantesPage = () => (
             <ScrollReveal>
               <div className="grid md:grid-cols-2 gap-12 items-center">
                 <div className={i % 2 === 1 ? "md:order-2" : ""}>
-                  <img src={s.img} alt={s.title} className="rounded-xl w-full h-72 md:h-96 object-cover" loading="lazy" width={600} height={400} />
+                  <PhotoGallery images={s.images} />
                 </div>
                 <div className={i % 2 === 1 ? "md:order-1" : ""}>
                   <s.icon className="w-10 h-10 text-primary mb-4" />
