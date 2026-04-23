@@ -19,10 +19,14 @@ type Solution = {
   ref?: string;
 };
 
-const solutions = [
+const solutions: Solution[] = [
   {
     id: "foamglas", icon: Shield,
-    title: "Isolation Thermique FOAMGLAS — Garantie 30 Ans", img: bitumenImg,
+    title: "Isolation Thermique FOAMGLAS — Garantie 30 Ans",
+    images: [
+      { src: bitumenImg, alt: "FOAMGLAS verre cellulaire" },
+      { src: teamImg, alt: "Pose FOAMGLAS au bitume chaud" },
+    ],
     text: "Le verre cellulaire FOAMGLAS est le matériau d'isolation le plus performant et le plus durable du marché pour les toitures terrasses. Étanche à l'eau et à la vapeur, incompressible, incombustible et résistant aux insectes et rongeurs, le FOAMGLAS offre une durée de vie exceptionnelle avec une garantie fabricant de 30 ans. EQUATION est qualifiée pour la mise en œuvre de ce procédé haut de gamme, collé au bitume à chaud sur les toitures terrasses.",
     points: [
       "Garantie fabricant 30 ans",
@@ -35,7 +39,8 @@ const solutions = [
   },
   {
     id: "cool-roof", icon: Sun,
-    title: "Toitures Froides / Cool Roof", img: greenRoofImg,
+    title: "Toitures Froides / Cool Roof",
+    images: [{ src: greenRoofImg, alt: "Cool Roof toiture réfléchissante" }],
     text: "Le Cool Roof est une solution de toiture réfléchissante qui réduit la température intérieure des bâtiments en réfléchissant les rayons solaires au lieu de les absorber. En appliquant un revêtement blanc hautement réflectif sur la membrane d'étanchéité existante, la température en toiture peut baisser de 30 à 40°C en période estivale. Résultat : un confort thermique amélioré sans climatisation et une réduction significative de la facture énergétique.",
     points: [
       "Réduction température toiture de 30 à 40°C en été",
@@ -47,7 +52,8 @@ const solutions = [
   },
   {
     id: "photovoltaique", icon: Zap,
-    title: "Toitures avec Panneaux Photovoltaïques", img: teamImg,
+    title: "Toitures avec Panneaux Photovoltaïques",
+    images: [{ src: teamImg, alt: "Panneaux photovoltaïques toiture terrasse" }],
     text: "EQUATION réalise l'intégration de panneaux photovoltaïques sur les toitures terrasses en coordination avec les installateurs solaires. Notre rôle : garantir que l'étanchéité de la toiture reste parfaite malgré les fixations et le poids des modules. Nous concevons des complexes d'étanchéité renforcés compatibles avec les systèmes de fixation photovoltaïques (lestés, fixés mécaniquement ou collés) et assurons la reprise d'étanchéité autour de chaque pénétration.",
     points: [
       "Complexe d'étanchéité renforcé sous panneaux",
@@ -59,7 +65,8 @@ const solutions = [
   },
   {
     id: "quartz", icon: Gem,
-    title: "Terrasses et Balcons avec Revêtement Quartz", img: ipeImg,
+    title: "Terrasses et Balcons avec Revêtement Quartz",
+    images: [{ src: ipeImg, alt: "Revêtement quartz balcon" }],
     text: "Le revêtement quartz combine étanchéité et finition décorative pour les terrasses accessibles, balcons et coursives. Ce système multicouche alliant résine et granulats de quartz colorés offre une surface antidérapante, résistante au trafic piétonnier et aux intempéries.",
     points: [
       "Finition décorative colorée",
