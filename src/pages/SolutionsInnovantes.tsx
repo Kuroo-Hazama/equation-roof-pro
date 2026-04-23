@@ -4,10 +4,21 @@ import PageHero from "@/components/PageHero";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ScrollReveal from "@/components/ScrollReveal";
 import PhotoGallery, { GalleryImage } from "@/components/PhotoGallery";
-import bitumenImg from "@/assets/bitumen-work.jpg";
-import greenRoofImg from "@/assets/green-roof.jpg";
-import teamImg from "@/assets/team-construction.jpg";
-import ipeImg from "@/assets/ipe-terrace.jpg";
+
+// Photos IA chantier réutilisées par solution (les + pertinentes thématiquement)
+import foam1 from "@/assets/realisations/glaciere-2.jpg";
+import foam2 from "@/assets/realisations/glaciere-3.jpg";
+import foam3 from "@/assets/realisations/glaciere-4.jpg";
+import foam4 from "@/assets/realisations/glaciere-1.jpg";
+import cool1 from "@/assets/realisations/cpam-5.jpg";
+import cool2 from "@/assets/realisations/cpam-1.jpg";
+import cool3 from "@/assets/realisations/vic-3.jpg";
+import pv1 from "@/assets/realisations/cendre-1.jpg";
+import pv2 from "@/assets/realisations/cpam-3.jpg";
+import pv3 from "@/assets/realisations/nievre-3.jpg";
+import quartz1 from "@/assets/realisations/arverne-2.jpg";
+import quartz2 from "@/assets/realisations/arverne-3.jpg";
+import quartz3 from "@/assets/realisations/arverne-1.jpg";
 
 type Solution = {
   id: string;
