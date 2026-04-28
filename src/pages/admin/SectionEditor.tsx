@@ -12,11 +12,13 @@ import {
   DndContext,
   closestCenter,
   PointerSensor,
+  TouchSensor,
+  KeyboardSensor,
   useSensor,
   useSensors,
   DragEndEvent,
 } from "@dnd-kit/core";
-import { SortableContext, useSortable, arrayMove, rectSortingStrategy } from "@dnd-kit/sortable";
+import { SortableContext, useSortable, arrayMove, rectSortingStrategy, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
 interface Photo {
@@ -48,14 +50,18 @@ const SortablePhoto = ({
     <div ref={setNodeRef} style={style} className="bg-card border rounded-lg overflow-hidden group">
       <div className="relative h-40 bg-muted">
         <img src={photo.url} alt={photo.caption || ""} className="w-full h-full object-cover" />
-        <button
+        <div
           {...attributes}
           {...listeners}
-          className="absolute top-2 left-2 bg-background/90 rounded p-1 cursor-grab active:cursor-grabbing"
-          title="Réordonner"
+          role="button"
+          tabIndex={0}
+          aria-label="Réordonner"
+          title="Glisser pour réordonner"
+          style={{ touchAction: "none" }}
+          className="absolute top-2 left-2 bg-background/90 rounded p-1 cursor-grab active:cursor-grabbing select-none"
         >
-          <GripVertical className="w-4 h-4" />
-        </button>
+          <GripVertical className="w-4 h-4 pointer-events-none" />
+        </div>
         <button
           onClick={() => onSetFavorite(photo.id)}
           className={`absolute top-2 right-2 rounded-full p-1.5 transition-all ${
@@ -100,7 +106,11 @@ const SectionEditor = () => {
   const [referenceText, setReferenceText] = useState("");
   const [photos, setPhotos] = useState<Photo[]>([]);
 
-  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay: 200, tolerance: 5 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+  );
 
   useEffect(() => {
     if (!id) return;
