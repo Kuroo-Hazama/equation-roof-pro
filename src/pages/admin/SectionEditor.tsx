@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { uploadImage } from "@/lib/uploadImage";
 import { toast } from "sonner";
-import { ArrowLeft, Save, Star, Trash2, Upload, GripVertical, Plus, X } from "lucide-react";
+import { ArrowDown, ArrowLeft, ArrowUp, Save, Star, Trash2, Upload, GripVertical, Plus, X } from "lucide-react";
 import {
   DndContext,
   closestCenter,
@@ -32,16 +32,22 @@ interface Photo {
 
 const SortablePhoto = ({
   photo,
+  canMoveDown,
+  canMoveUp,
   onSetFavorite,
   onUpdateCaption,
   onDelete,
   onBlurCaption,
+  onMove,
 }: {
   photo: Photo;
+  canMoveDown: boolean;
+  canMoveUp: boolean;
   onSetFavorite: (id: string) => void;
   onUpdateCaption: (id: string, c: string) => void;
   onDelete: (id: string) => void;
   onBlurCaption: (id: string, c: string) => void;
+  onMove: (id: string, direction: -1 | 1) => void;
 }) => {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: photo.id });
   const style = { transform: CSS.Transform.toString(transform), transition, opacity: isDragging ? 0.4 : 1 };
@@ -49,7 +55,7 @@ const SortablePhoto = ({
   return (
     <div ref={setNodeRef} style={style} className="bg-card border rounded-lg overflow-hidden group">
       <div className="relative h-40 bg-muted">
-        <img src={photo.url} alt={photo.caption || ""} className="w-full h-full object-cover" />
+        <img src={photo.url} alt={photo.caption || ""} className="w-full h-full object-cover pointer-events-none" />
         <div
           {...attributes}
           {...listeners}
@@ -58,12 +64,40 @@ const SortablePhoto = ({
           aria-label="Réordonner"
           title="Glisser pour réordonner"
           style={{ touchAction: "none" }}
-          className="absolute top-2 left-2 bg-background/90 rounded p-1 cursor-grab active:cursor-grabbing select-none"
+          className="absolute inset-0 z-0 cursor-grab active:cursor-grabbing select-none"
+        />
+        <div className="absolute top-2 left-2 z-10 flex items-center gap-1 pointer-events-none">
+          <span className="bg-background/90 rounded p-1 shadow-sm">
+            <GripVertical className="w-4 h-4" />
+          </span>
+        </div>
+        <div className="absolute bottom-2 left-2 z-10 flex gap-1">
+          <button
+            type="button"
+            disabled={!canMoveUp}
+            onPointerDown={(e) => e.stopPropagation()}
+            onClick={() => onMove(photo.id, -1)}
+            className="bg-background/90 text-foreground rounded p-1.5 shadow-sm disabled:opacity-40 disabled:cursor-not-allowed"
+            title="Monter"
+          >
+            <ArrowUp className="w-4 h-4" />
+          </button>
+          <button
+            type="button"
+            disabled={!canMoveDown}
+            onPointerDown={(e) => e.stopPropagation()}
+            onClick={() => onMove(photo.id, 1)}
+            className="bg-background/90 text-foreground rounded p-1.5 shadow-sm disabled:opacity-40 disabled:cursor-not-allowed"
+            title="Descendre"
+          >
+            <ArrowDown className="w-4 h-4" />
+          </button>
         >
-          <GripVertical className="w-4 h-4 pointer-events-none" />
         </div>
         <button
+          type="button"
           onClick={() => onSetFavorite(photo.id)}
+          onPointerDown={(e) => e.stopPropagation()}
           className={`absolute top-2 right-2 rounded-full p-1.5 transition-all ${
             photo.is_favorite ? "bg-amber-500 text-white" : "bg-background/90 text-muted-foreground hover:text-amber-500"
           }`}
@@ -72,8 +106,10 @@ const SortablePhoto = ({
           <Star className={`w-4 h-4 ${photo.is_favorite ? "fill-current" : ""}`} />
         </button>
         <button
+          type="button"
           onClick={() => onDelete(photo.id)}
-          className="absolute bottom-2 right-2 bg-destructive text-destructive-foreground rounded p-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
+          onPointerDown={(e) => e.stopPropagation()}
+          className="absolute bottom-2 right-2 z-10 bg-destructive text-destructive-foreground rounded p-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
           title="Supprimer"
         >
           <Trash2 className="w-4 h-4" />
