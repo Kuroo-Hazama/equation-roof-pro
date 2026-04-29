@@ -89,7 +89,33 @@ const BlogArticlePage = () => {
               <span className="bg-primary text-primary-foreground text-sm font-subtitle font-semibold px-2 py-0.5 rounded">{dbArticle.cat}</span>
               <span className="text-sm text-muted-foreground font-body">{dbArticle.date}</span>
             </div>
-            <div className="prose prose-lg max-w-none prose-headings:font-heading prose-headings:text-foreground prose-p:text-foreground prose-p:font-body prose-a:text-primary prose-img:rounded-lg" dangerouslySetInnerHTML={{ __html: dbArticle.html }} />
+            {(() => {
+              const html = dbArticle.html;
+              const idx = html.indexOf("</p>");
+              if (dbArticle.videoUrl && idx !== -1) {
+                const before = html.slice(0, idx + 4);
+                const after = html.slice(idx + 4);
+                return (
+                  <>
+                    <div className="prose prose-lg max-w-none prose-headings:font-heading prose-headings:text-foreground prose-p:text-foreground prose-p:font-body prose-a:text-primary prose-img:rounded-lg" dangerouslySetInnerHTML={{ __html: before }} />
+                    <div className="my-8">
+                      <YouTubePlayer url={dbArticle.videoUrl} title={dbArticle.title} />
+                    </div>
+                    <div className="prose prose-lg max-w-none prose-headings:font-heading prose-headings:text-foreground prose-p:text-foreground prose-p:font-body prose-a:text-primary prose-img:rounded-lg" dangerouslySetInnerHTML={{ __html: after }} />
+                  </>
+                );
+              }
+              return (
+                <>
+                  <div className="prose prose-lg max-w-none prose-headings:font-heading prose-headings:text-foreground prose-p:text-foreground prose-p:font-body prose-a:text-primary prose-img:rounded-lg" dangerouslySetInnerHTML={{ __html: html }} />
+                  {dbArticle.videoUrl && (
+                    <div className="my-8">
+                      <YouTubePlayer url={dbArticle.videoUrl} title={dbArticle.title} />
+                    </div>
+                  )}
+                </>
+              );
+            })()}
 
             <div className="mt-12 bg-primary rounded-xl p-8 text-center">
               <h3 className="text-xl font-heading text-primary-foreground mb-2">Besoin d'un diagnostic ?</h3>
