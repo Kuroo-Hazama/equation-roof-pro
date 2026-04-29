@@ -153,6 +153,8 @@ const ArticleEditor = () => {
               <RichEditor value={content} onChange={setContent} />
             </div>
           </div>
+
+          <YouTubeUrlField value={videoUrl} onChange={setVideoUrl} />
         </div>
 
         <aside className="space-y-5">
