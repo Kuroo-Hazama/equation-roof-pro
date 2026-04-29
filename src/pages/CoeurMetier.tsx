@@ -113,6 +113,7 @@ const expertises: Expertise[] = [
     ],
   },
   {
+    id: "fuite", icon: Search,
     title: "Recherche de Fuite — Diagnostic Précis et Non Destructif",
     images: [
       { src: fuiteA, alt: "Diagnostic toiture", caption: "Diagnostic visuel et technique sur étanchéité — localisation précise sans destruction" },
