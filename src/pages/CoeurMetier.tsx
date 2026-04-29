@@ -96,7 +96,23 @@ const expertises: Expertise[] = [
     points: ["Complexe bicouche anti-racine certifié", "Végétalisation extensive (sedum, graminées)", "Rétention des eaux pluviales", "Amélioration du confort thermique été/hiver"],
   },
   {
-    id: "fuite", icon: Search,
+    id: "securite-desenfumage", icon: ShieldAlert,
+    title: "Sécurité — Éclairage Zénithal — Désenfumage",
+    images: [
+      { src: securite1, alt: "Lanterneaux d'éclairage zénithal", caption: "Lanterneaux et voûtes filantes — apport de lumière naturelle en toiture industrielle" },
+      { src: securite2, alt: "Garde-corps et ligne de vie", caption: "Garde-corps, lignes de vie et points d'ancrage conformes NF EN 795" },
+      { src: securite3, alt: "Exutoire de désenfumage DENFC", caption: "Exutoire de désenfumage DENFC — conforme NF EN 12101-2 (ERP & industriel)" },
+    ],
+    text: "La sécurité en toiture terrasse passe par des équipements conformes aux réglementations en vigueur. EQUATION assure la fourniture, la pose et la maintenance des dispositifs de sécurité, d'éclairage naturel et de désenfumage sur toitures terrasses et bâtiments industriels, commerciaux et tertiaires.\n\nNos interventions couvrent les exutoires de désenfumage (DENFC), les lanterneaux d'éclairage zénithal (polycarbonate, PMMA), ainsi que les équipements de sécurité (garde-corps, lignes de vie, points d'ancrage, crosses d'accès et échelles à crinoline) conformes aux normes NF EN 795 et NF E 85-015.",
+    points: [
+      "Exutoires de désenfumage conformes NF EN 12101-2",
+      "Lanterneaux d'éclairage zénithal (polycarbonate, PMMA)",
+      "Garde-corps, lignes de vie et points d'ancrage",
+      "Pose, raccordement et maintenance préventive",
+      "Conformité ERP et bâtiments industriels",
+    ],
+  },
+  {
     title: "Recherche de Fuite — Diagnostic Précis et Non Destructif",
     images: [
       { src: fuiteA, alt: "Diagnostic toiture", caption: "Diagnostic visuel et technique sur étanchéité — localisation précise sans destruction" },
