@@ -5,6 +5,8 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import ScrollReveal from "@/components/ScrollReveal";
 import PhotoGallery, { GalleryImage } from "@/components/PhotoGallery";
 import YouTubePlayer from "@/components/YouTubePlayer";
+import SEO from "@/components/SEO";
+import { PAGE_SEO } from "@/lib/seo-config";
 
 // Photos IA dédiées par expertise
 import isolation1 from "@/assets/expertises/isolation-1.jpg";
@@ -168,6 +170,12 @@ const ExpertiseBlock = ({ e, i }: { e: Expertise; i: number }) => {
 
 const CoeurMetierPage = () => (
   <>
+    <SEO
+      title={PAGE_SEO.coeurMetier.title}
+      description={PAGE_SEO.coeurMetier.description}
+      path="/coeur-de-metier"
+      breadcrumbs={PAGE_SEO.coeurMetier.breadcrumbs}
+    />
     <PageHero title="Notre Cœur de Métier" subtitle="6 expertises techniques au service de vos toitures terrasses" />
     <Breadcrumbs items={[{ label: "Notre Cœur de Métier" }]} />
 

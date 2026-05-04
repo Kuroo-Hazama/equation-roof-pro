@@ -5,6 +5,8 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import ScrollReveal from "@/components/ScrollReveal";
 import PhotoGallery, { GalleryImage } from "@/components/PhotoGallery";
 import YouTubePlayer from "@/components/YouTubePlayer";
+import SEO from "@/components/SEO";
+import { PAGE_SEO } from "@/lib/seo-config";
 
 // Photos IA chantier réutilisées par solution (les + pertinentes thématiquement)
 import foam1 from "@/assets/realisations/glaciere-2.jpg";
@@ -161,6 +163,12 @@ const SolutionBlock = ({ s, i }: { s: Solution; i: number }) => {
 
 const SolutionsInnovantesPage = () => (
   <>
+    <SEO
+      title={PAGE_SEO.solutionsInnovantes.title}
+      description={PAGE_SEO.solutionsInnovantes.description}
+      path="/solutions-innovantes"
+      breadcrumbs={PAGE_SEO.solutionsInnovantes.breadcrumbs}
+    />
     <PageHero title="Nos Solutions Innovantes" subtitle="EQUATION investit dans les technologies d'avenir pour des bâtiments plus performants et plus durables" />
     <Breadcrumbs items={[{ label: "Solutions Innovantes" }]} />
 

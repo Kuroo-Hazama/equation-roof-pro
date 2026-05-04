@@ -2,6 +2,8 @@ import { Award, Shield, PenTool, Clock, Building2, Landmark, Users, Briefcase, U
 import PageHero from "@/components/PageHero";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ScrollReveal from "@/components/ScrollReveal";
+import SEO from "@/components/SEO";
+import { PAGE_SEO } from "@/lib/seo-config";
 import certificationsImg from "@/assets/certifications.png";
 import signatureImg from "@/assets/signature-efficacite.png";
 import teamImg from "@/assets/team-construction.jpg";
@@ -36,6 +38,12 @@ const clients = [
 
 const EntreprisePage = () => (
   <>
+    <SEO
+      title={PAGE_SEO.entreprise.title}
+      description={PAGE_SEO.entreprise.description}
+      path="/entreprise"
+      breadcrumbs={PAGE_SEO.entreprise.breadcrumbs}
+    />
     <PageHero title="Qui Sommes-Nous et Pourquoi Nous Choisir" subtitle="EQUATION — 25 ans d'expertise en étanchéité et isolation en Auvergne" />
     <Breadcrumbs items={[{ label: "L'Entreprise" }]} />
 

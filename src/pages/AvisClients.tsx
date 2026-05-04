@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import PageHero from "@/components/PageHero";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ScrollReveal from "@/components/ScrollReveal";
+import SEO from "@/components/SEO";
+import { PAGE_SEO } from "@/lib/seo-config";
 
 const stats = [
   { value: "25+", label: "Années de confiance" },
@@ -39,6 +41,12 @@ const testimonials = [
 
 const AvisClientsPage = () => (
   <>
+    <SEO
+      title={PAGE_SEO.avisClients.title}
+      description={PAGE_SEO.avisClients.description}
+      path="/avis-clients"
+      breadcrumbs={PAGE_SEO.avisClients.breadcrumbs}
+    />
     <PageHero title="Ce Que Disent Nos Clients" subtitle="La satisfaction de nos clients est notre meilleure carte de visite" />
     <Breadcrumbs items={[{ label: "Avis Clients" }]} />
 

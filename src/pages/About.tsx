@@ -2,6 +2,8 @@ import { Award, Shield, Leaf, Users } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ScrollReveal from "@/components/ScrollReveal";
+import SEO from "@/components/SEO";
+import { PAGE_SEO } from "@/lib/seo-config";
 import teamImg from "@/assets/team-construction.jpg";
 import signatureImg from "@/assets/signature-efficacite.png";
 import certificationsImg from "@/assets/certifications.png";
@@ -26,6 +28,12 @@ const values = [
 
 const AboutPage = () => (
   <>
+    <SEO
+      title={PAGE_SEO.aPropos.title}
+      description={PAGE_SEO.aPropos.description}
+      path="/a-propos"
+      breadcrumbs={PAGE_SEO.aPropos.breadcrumbs}
+    />
     <PageHero title="EQUATION — L'Expertise au Service de Votre Bâtiment" subtitle="Depuis 2001, nous protégeons vos toitures terrasses en Auvergne" />
     <Breadcrumbs items={[{ label: "À Propos" }]} />
 

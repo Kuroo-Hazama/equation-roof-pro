@@ -4,6 +4,8 @@ import PageHero from "@/components/PageHero";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ScrollReveal from "@/components/ScrollReveal";
 import { supabase } from "@/integrations/supabase/client";
+import SEO from "@/components/SEO";
+import { PAGE_SEO } from "@/lib/seo-config";
 import bitumenImg from "@/assets/bitumen-work.jpg";
 import greenRoofImg from "@/assets/green-roof.jpg";
 import teamImg from "@/assets/team-construction.jpg";
@@ -54,6 +56,12 @@ const BlogPage = () => {
 
   return (
   <>
+    <SEO
+      title={PAGE_SEO.blog.title}
+      description={PAGE_SEO.blog.description}
+      path="/blog"
+      breadcrumbs={PAGE_SEO.blog.breadcrumbs}
+    />
     <PageHero title="Notre Blog" subtitle="Conseils et expertise en étanchéité de toitures terrasses" />
     <Breadcrumbs items={[{ label: "Blog" }]} />
 

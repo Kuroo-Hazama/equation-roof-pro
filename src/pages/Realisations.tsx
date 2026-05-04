@@ -7,6 +7,8 @@ import ScrollReveal from "@/components/ScrollReveal";
 import PhotoGallery, { GalleryImage } from "@/components/PhotoGallery";
 import YouTubePlayer from "@/components/YouTubePlayer";
 import { supabase } from "@/integrations/supabase/client";
+import SEO from "@/components/SEO";
+import { PAGE_SEO } from "@/lib/seo-config";
 
 // Photos générées par IA spécifiquement pour chaque réalisation EQUATION
 import cpam1 from "@/assets/realisations/cpam-1.jpg";
@@ -310,6 +312,12 @@ const RealisationsPage = () => {
 
   return (
     <>
+      <SEO
+        title={PAGE_SEO.realisations.title}
+        description={PAGE_SEO.realisations.description}
+        path="/realisations"
+        breadcrumbs={PAGE_SEO.realisations.breadcrumbs}
+      />
       <PageHero title="Nos Réalisations" subtitle="25 ans de chantiers d'exception en Auvergne et au-delà" />
       <Breadcrumbs items={[{ label: "Réalisations" }]} />
 

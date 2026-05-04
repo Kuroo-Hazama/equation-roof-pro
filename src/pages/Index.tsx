@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { Flame, Droplets, Gem, Search, Grid3X3, Leaf, Award, Shield, PenTool, Clock, Building2, Landmark, Users, Briefcase, Home, User, CheckCircle, Phone, ArrowRight } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
+import SEO from "@/components/SEO";
+import { PAGE_SEO, LOCAL_BUSINESS_SCHEMA } from "@/lib/seo-config";
 import bannerImg from "@/assets/banner-equation-01.png";
 import cpam1 from "@/assets/realisations/cpam-1.jpg";
 import cpam2 from "@/assets/realisations/cpam-2.jpg";
@@ -145,6 +147,13 @@ const clients = [
 const HomePage = () => {
   return (
     <>
+      <SEO
+        title={PAGE_SEO.home.title}
+        description={PAGE_SEO.home.description}
+        path="/"
+        breadcrumbs={PAGE_SEO.home.breadcrumbs}
+        jsonLd={LOCAL_BUSINESS_SCHEMA}
+      />
       {/* Hero */}
       <section className="relative bg-noir flex flex-col">
         <div className="flex-1 flex items-center pt-32 pb-10 md:pb-16">

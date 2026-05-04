@@ -4,6 +4,8 @@ import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ScrollReveal from "@/components/ScrollReveal";
+import SEO from "@/components/SEO";
+import { PAGE_SEO } from "@/lib/seo-config";
 
 const projectTypes = [
   "Étanchéité toiture terrasse",
@@ -35,6 +37,12 @@ const ContactPage = () => {
 
   return (
     <>
+      <SEO
+        title={PAGE_SEO.contact.title}
+        description={PAGE_SEO.contact.description}
+        path="/contact"
+        breadcrumbs={PAGE_SEO.contact.breadcrumbs}
+      />
       <PageHero title="Contact & Devis Gratuit" subtitle="Réponse sous 48h — Intervention dans tout le Puy-de-Dôme" />
       <Breadcrumbs items={[{ label: "Contact" }]} />
 

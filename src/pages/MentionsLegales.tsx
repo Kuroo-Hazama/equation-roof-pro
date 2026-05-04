@@ -1,8 +1,16 @@
 import PageHero from "@/components/PageHero";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import SEO from "@/components/SEO";
+import { PAGE_SEO } from "@/lib/seo-config";
 
 const MentionsLegales = () => (
   <>
+    <SEO
+      title={PAGE_SEO.mentionsLegales.title}
+      description={PAGE_SEO.mentionsLegales.description}
+      path="/mentions-legales"
+      breadcrumbs={PAGE_SEO.mentionsLegales.breadcrumbs}
+    />
     <PageHero title="Mentions Légales" />
     <Breadcrumbs items={[{ label: "Mentions légales" }]} />
 

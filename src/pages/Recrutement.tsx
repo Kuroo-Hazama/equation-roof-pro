@@ -4,6 +4,8 @@ import PageHero from "@/components/PageHero";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ScrollReveal from "@/components/ScrollReveal";
 import { supabase } from "@/integrations/supabase/client";
+import SEO from "@/components/SEO";
+import { PAGE_SEO } from "@/lib/seo-config";
 
 type JobOffer = {
   id: string;
@@ -44,6 +46,12 @@ const Recrutement = () => {
 
   return (
     <>
+      <SEO
+        title={PAGE_SEO.recrutement.title}
+        description={PAGE_SEO.recrutement.description}
+        path="/recrutement"
+        breadcrumbs={PAGE_SEO.recrutement.breadcrumbs}
+      />
       <PageHero
         title="Recrutement — Nous Rejoindre"
         subtitle="EQUATION recrute des passionnés de l'étanchéité en Auvergne"
