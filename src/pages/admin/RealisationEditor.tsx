@@ -147,12 +147,18 @@ const RealisationEditor = () => {
     })();
   }, [id, isNew, navigate]);
 
+  const slugify = (s: string) =>
+    s.toLowerCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "") || `realisation-${Date.now()}`;
+
   const ensureProject = async (): Promise<string | null> => {
     if (!isNew) return id!;
     const parsed = schema.safeParse({ title, category, description });
     if (!parsed.success) { toast.error(parsed.error.errors[0].message); return null; }
     const { data, error } = await supabase.from("realisations").insert({
-      title, category, description: description || null, status: "draft",
+      title, category, description: description || null, status: "draft", slug: slugify(title),
     }).select("id").single();
     if (error) { toast.error(error.message); return null; }
     navigate(`/admin/realisations/${data.id}`, { replace: true });
@@ -236,7 +242,7 @@ const RealisationEditor = () => {
     setSaving(true);
     const payload = { title, category, description: description || null, surface: surface || null, technique: technique || null, year: year || null, location: location || null, video_url: videoUrl.trim() || null, status };
     const result = isNew
-      ? await supabase.from("realisations").insert(payload).select("id").single()
+      ? await supabase.from("realisations").insert({ ...payload, slug: slugify(title) }).select("id").single()
       : await supabase.from("realisations").update(payload).eq("id", id!).select("id").single();
     if (result.error) { toast.error(result.error.message); setSaving(false); return; }
     toast.success(status === "published" ? "Réalisation publiée" : "Brouillon enregistré");
