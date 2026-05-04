@@ -8,20 +8,20 @@ import YouTubePlayer from "@/components/YouTubePlayer";
 import SEO from "@/components/SEO";
 import { PAGE_SEO } from "@/lib/seo-config";
 
-// Photos IA chantier réutilisées par solution (les + pertinentes thématiquement)
-import foam1 from "@/assets/realisations/glaciere-2.jpg";
-import foam2 from "@/assets/realisations/glaciere-3.jpg";
-import foam3 from "@/assets/realisations/glaciere-4.jpg";
-import foam4 from "@/assets/realisations/glaciere-1.jpg";
-import cool1 from "@/assets/realisations/cpam-5.jpg";
-import cool2 from "@/assets/realisations/cpam-1.jpg";
-import cool3 from "@/assets/realisations/vic-3.jpg";
-import pv1 from "@/assets/realisations/cendre-1.jpg";
-import pv2 from "@/assets/realisations/cpam-3.jpg";
-import pv3 from "@/assets/realisations/nievre-3.jpg";
-import quartz1 from "@/assets/realisations/arverne-2.jpg";
-import quartz2 from "@/assets/realisations/arverne-3.jpg";
-import quartz3 from "@/assets/realisations/arverne-1.jpg";
+// Photos chantier servies depuis public/realisations/ (URLs stables)
+const foam1 = "/realisations/glaciere-2.jpg";
+const foam2 = "/realisations/glaciere-3.jpg";
+const foam3 = "/realisations/glaciere-4.jpg";
+const foam4 = "/realisations/glaciere-1.jpg";
+const cool1 = "/realisations/cpam-5.jpg";
+const cool2 = "/realisations/cpam-1.jpg";
+const cool3 = "/realisations/vic-3.jpg";
+const pv1 = "/realisations/cendre-1.jpg";
+const pv2 = "/realisations/cpam-3.jpg";
+const pv3 = "/realisations/nievre-3.jpg";
+const quartz1 = "/realisations/arverne-2.jpg";
+const quartz2 = "/realisations/arverne-3.jpg";
+const quartz3 = "/realisations/arverne-1.jpg";
 
 type Solution = {
   id: string;

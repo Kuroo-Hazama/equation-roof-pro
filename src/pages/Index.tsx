@@ -1,21 +1,12 @@
 import { Link } from "react-router-dom";
-import { Flame, Droplets, Gem, Search, Grid3X3, Leaf, Award, Shield, PenTool, Clock, Building2, Landmark, Users, Briefcase, Home, User, CheckCircle, Phone, ArrowRight } from "lucide-react";
+import { Flame, Droplets, Gem, Search, Grid3X3, Leaf, Award, Shield, PenTool, Clock, Building2, Landmark, Users, Briefcase, User, Phone, ArrowRight } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 import SEO from "@/components/SEO";
 import { PAGE_SEO, LOCAL_BUSINESS_SCHEMA } from "@/lib/seo-config";
+import { supabase } from "@/integrations/supabase/client";
 import bannerImg from "@/assets/banner-equation-01.png";
-import cpam1 from "@/assets/realisations/cpam-1.jpg";
-import cpam2 from "@/assets/realisations/cpam-2.jpg";
-import cpam3 from "@/assets/realisations/cpam-3.jpg";
-import nievre1 from "@/assets/realisations/nievre-1.jpg";
-import nievre2 from "@/assets/realisations/nievre-2.jpg";
-import nievre3 from "@/assets/realisations/nievre-3.jpg";
-import assemblia1 from "@/assets/realisations/assemblia-1.jpg";
-import assemblia2 from "@/assets/realisations/assemblia-2.jpg";
-import assemblia3 from "@/assets/realisations/assemblia-3.jpg";
-import glaciere1 from "@/assets/realisations/glaciere-1.jpg";
-import glaciere2 from "@/assets/realisations/glaciere-2.jpg";
-import glaciere3 from "@/assets/realisations/glaciere-3.jpg";
+
+const teamImg = "/realisations/cpam-1.jpg";
 
 import certificationsImg from "@/assets/certifications.png";
 import { useEffect, useRef, useState } from "react";
@@ -69,19 +60,14 @@ const expertises = [
   { icon: Leaf, title: "Toiture Végétalisée", desc: "Végétalisation extensive et semi-intensive, biodiversité urbaine", hash: "/coeur-de-metier#vegetalisee" },
 ];
 
-const projects = [
-  { images: [cpam1, cpam2, cpam3], title: "CPAM de Nevers", desc: "Rénovation complète étanchéité et isolation thermique de 6 toitures terrasses avec grue GMA" },
-  { images: [nievre1, nievre2, nievre3], title: "Nièvre Habitat", desc: "Rénovation de 3 immeubles, isolation polyuréthane 100mm et étanchéité bitumineuse" },
-  { images: [assemblia1, assemblia2, assemblia3], title: "Assemblia Clermont-Ferrand", desc: "Transformation en terrasse végétalisée extensive" },
-  { images: [glaciere1, glaciere2, glaciere3], title: "Groupe La Glacière", desc: "1 200 m² de toitures terrasses avec verre cellulaire collé au bitume à chaud" },
-];
+type HomeProject = { id: string; images: string[]; title: string; desc: string };
 
 const ProjectCard = ({ images, title, desc }: { images: string[]; title: string; desc: string }) => {
   const [idx, setIdx] = useState(0);
   const [hover, setHover] = useState(false);
 
   useEffect(() => {
-    if (!hover) return;
+    if (!hover || images.length <= 1) return;
     const t = setInterval(() => setIdx((i) => (i + 1) % images.length), 1200);
     return () => clearInterval(t);
   }, [hover, images.length]);
@@ -145,6 +131,46 @@ const clients = [
 ];
 
 const HomePage = () => {
+  const [projects, setProjects] = useState<HomeProject[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      const { data: reals } = await supabase
+        .from("realisations")
+        .select("id,title,description")
+        .eq("status", "published")
+        .order("display_order", { ascending: true })
+        .order("created_at", { ascending: false })
+        .limit(4);
+      if (!reals || reals.length === 0) {
+        setProjects([]);
+        return;
+      }
+
+      const ids = reals.map((r) => r.id);
+      const { data: photos } = await supabase
+        .from("realisation_photos")
+        .select("realisation_id,url,display_order,is_favorite")
+        .in("realisation_id", ids)
+        .order("is_favorite", { ascending: false })
+        .order("display_order", { ascending: true });
+
+      const mapped: HomeProject[] = reals.map((r) => {
+        const imgs = (photos || [])
+          .filter((p) => p.realisation_id === r.id)
+          .slice(0, 3)
+          .map((p) => p.url);
+        return {
+          id: r.id,
+          title: r.title,
+          desc: r.description || "",
+          images: imgs.length ? imgs : ["/placeholder.svg"],
+        };
+      });
+      setProjects(mapped);
+    })();
+  }, []);
+
   return (
     <>
       <SEO
@@ -226,7 +252,7 @@ const HomePage = () => {
           </ScrollReveal>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {projects.map((p, i) => (
-              <ScrollReveal key={p.title} delay={i * 100}>
+              <ScrollReveal key={p.id} delay={i * 100}>
                 <ProjectCard images={p.images} title={p.title} desc={p.desc} />
               </ScrollReveal>
             ))}
@@ -247,7 +273,7 @@ const HomePage = () => {
           </ScrollReveal>
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <ScrollReveal>
-              <img src={cpam1} alt="Équipe EQUATION étanchéité professionnelle" className="rounded-xl w-full h-80 object-cover" loading="lazy" width={600} height={400} />
+              <img src={teamImg} alt="Équipe EQUATION étanchéité professionnelle" className="rounded-xl w-full h-80 object-cover" loading="lazy" width={600} height={400} />
             </ScrollReveal>
             <div className="space-y-6">
               {reasons.map((r, i) => (
