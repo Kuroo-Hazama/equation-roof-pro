@@ -21,7 +21,7 @@ const solutionsInnovantes = [
 ];
 
 const navLinks = [
-  { label: "L'Entreprise", href: "/entreprise" },
+  { label: "Qui sommes-nous", href: "/entreprise" },
   { label: "Notre Cœur de Métier", href: "/coeur-de-metier", submenu: coeurMetier },
   { label: "Solutions Innovantes", href: "/solutions-innovantes", submenu: solutionsInnovantes },
   { label: "Réalisations", href: "/realisations" },
