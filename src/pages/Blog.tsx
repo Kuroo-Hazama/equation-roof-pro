@@ -7,30 +7,16 @@ import SEO from "@/components/SEO";
 import { PAGE_SEO } from "@/lib/seo-config";
 import { fetchPublishedBlogArticles, type BlogArticleData } from "@/lib/data-loaders";
 import bitumenImg from "@/assets/bitumen-work.jpg";
-import greenRoofImg from "@/assets/green-roof.jpg";
-import teamImg from "@/assets/team-construction.jpg";
-import ipeImg from "@/assets/ipe-terrace.jpg";
 
 type Article = { slug: string; cat: string; date: string; img: string; title: string; excerpt: string };
-
-const staticArticles: Article[] = [
-  { slug: "signes-renovation-etancheite", cat: "Conseils", date: "12 mars 2026", img: bitumenImg, title: "Les 5 Signes qu'il Est Temps de Rénover l'Étanchéité de Votre Toiture Terrasse", excerpt: "Flaques stagnantes, fissures dans les membranes, taches d'humidité au plafond... Découvrez les signaux d'alerte à ne pas ignorer." },
-  { slug: "bitumineuse-vs-resine", cat: "Guide Technique", date: "5 mars 2026", img: teamImg, title: "Étanchéité Bitumineuse vs Résine : Quelle Solution Choisir ?", excerpt: "Comparatif détaillé des deux systèmes d'étanchéité les plus courants : avantages, inconvénients, coûts et cas d'usage." },
-  { slug: "toiture-vegetalisee-2026", cat: "Écologie", date: "20 février 2026", img: greenRoofImg, title: "Toiture Végétalisée : Avantages, Coûts et Réglementation en 2026", excerpt: "Avantages thermiques, rétention des eaux pluviales, conformité PLU et coût au m² : tout savoir sur la végétalisation." },
-  { slug: "dtu-43-1", cat: "Réglementation", date: "10 février 2026", img: bitumenImg, title: "DTU 43.1 : Comprendre la Norme Étanchéité des Toitures Terrasses", excerpt: "Vulgarisation de la norme, obligations légales et pourquoi choisir un professionnel certifié." },
-  { slug: "isolation-thermique-toiture", cat: "Économie d'énergie", date: "1 février 2026", img: teamImg, title: "Isolation Thermique par la Toiture : Poste N°1 d'Économie d'Énergie", excerpt: "30% des déperditions passent par le toit. Lien avec l'étanchéité et aides MaPrimeRénov." },
-  { slug: "dalles-sur-plots", cat: "Aménagement", date: "20 janvier 2026", img: ipeImg, title: "Dalles sur Plots : Transformer sa Toiture Terrasse en Espace de Vie", excerpt: "Comment ça fonctionne, types de dalles, hauteur de plots et avantages du drainage intégré." },
-  { slug: "bois-ipe-terrasses", cat: "Matériaux", date: "10 janvier 2026", img: ipeImg, title: "Le Bois IPE : L'Essence Reine des Terrasses Extérieures", excerpt: "Propriétés, durabilité, entretien et comparatif avec les autres essences de bois." },
-  { slug: "recherche-fuite-toiture", cat: "Diagnostic", date: "2 janvier 2026", img: bitumenImg, title: "Recherche de Fuite en Toiture Terrasse : Technologies Modernes", excerpt: "Thermographie, tests fumigènes, détection électrique : quand et comment intervenir." },
-];
 
 const formatDate = (iso: string | null) => {
   if (!iso) return "";
   return new Date(iso).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
 };
 
-function mergeArticles(db: BlogArticleData[]): Article[] {
-  const dbArticles: Article[] = db.map((a) => ({
+const toArticles = (db: BlogArticleData[]): Article[] =>
+  db.map((a) => ({
     slug: a.slug,
     cat: a.category,
     date: formatDate(a.publishedAt),
@@ -38,18 +24,12 @@ function mergeArticles(db: BlogArticleData[]): Article[] {
     title: a.title,
     excerpt: a.excerpt,
   }));
-  const dbSlugs = new Set(dbArticles.map((a) => a.slug));
-  return [...dbArticles, ...staticArticles.filter((a) => !dbSlugs.has(a.slug))];
-}
 
 type LoaderData = { articles?: BlogArticleData[] };
 
 const BlogPage = () => {
   const loaded = useLoaderData() as LoaderData | undefined;
-  const initial = loaded?.articles?.length
-    ? mergeArticles(loaded.articles)
-    : staticArticles;
-
+  const initial = loaded?.articles?.length ? toArticles(loaded.articles) : [];
   const [articles, setArticles] = useState<Article[]>(initial);
   const hasDbArticles = (loaded?.articles?.length ?? 0) > 0;
 
@@ -57,71 +37,75 @@ const BlogPage = () => {
     if (hasDbArticles) return;
     (async () => {
       const data = await fetchPublishedBlogArticles();
-      if (data.length) setArticles(mergeArticles(data));
+      if (data.length) setArticles(toArticles(data));
     })();
   }, [hasDbArticles]);
 
   return (
-  <>
-    <SEO
-      title={PAGE_SEO.blog.title}
-      description={PAGE_SEO.blog.description}
-      path="/blog"
-      breadcrumbs={PAGE_SEO.blog.breadcrumbs}
-    />
-    <PageHero title="Notre Blog" subtitle="Conseils et expertise en étanchéité de toitures terrasses" />
-    <Breadcrumbs items={[{ label: "Blog" }]} />
+    <>
+      <SEO
+        title={PAGE_SEO.blog.title}
+        description={PAGE_SEO.blog.description}
+        path="/blog"
+        breadcrumbs={PAGE_SEO.blog.breadcrumbs}
+      />
+      <PageHero title="Notre Blog" subtitle="Conseils et expertise en étanchéité de toitures terrasses" />
+      <Breadcrumbs items={[{ label: "Blog" }]} />
 
-    <section className="container-main section-padding">
-      <div className="grid md:grid-cols-3 gap-10">
-        <div className="md:col-span-2">
-          <div className="grid sm:grid-cols-2 gap-6">
-            {articles.map((a, i) => (
-              <ScrollReveal key={a.slug} delay={i * 80}>
-                <Link to={`/blog/${a.slug}`} className="card-equation overflow-hidden block h-full">
-                  <img src={a.img} alt={a.title} className="w-full h-44 object-cover" loading="lazy" decoding="async" width={400} height={250} />
-                  <div className="p-5">
-                    <div className="flex items-center gap-3 mb-2">
-                      <span className="bg-primary text-primary-foreground text-xs font-subtitle font-semibold px-2 py-0.5 rounded">{a.cat}</span>
-                      <span className="text-xs text-muted-foreground font-body">{a.date}</span>
-                    </div>
-                    <h3 className="text-base font-heading text-foreground leading-snug">{a.title}</h3>
-                    <p className="text-muted-foreground text-sm font-body mt-2 line-clamp-2">{a.excerpt}</p>
-                  </div>
-                </Link>
-              </ScrollReveal>
-            ))}
+      <section className="container-main section-padding">
+        <div className="grid md:grid-cols-3 gap-10">
+          <div className="md:col-span-2">
+            {articles.length === 0 ? (
+              <p className="text-muted-foreground font-body">Aucun article pour le moment.</p>
+            ) : (
+              <div className="grid sm:grid-cols-2 gap-6">
+                {articles.map((a, i) => (
+                  <ScrollReveal key={a.slug} delay={i * 80}>
+                    <Link to={`/blog/${a.slug}`} className="card-equation overflow-hidden block h-full">
+                      <img src={a.img} alt={a.title} className="w-full h-44 object-cover" loading="lazy" decoding="async" width={400} height={250} />
+                      <div className="p-5">
+                        <div className="flex items-center gap-3 mb-2">
+                          <span className="bg-primary text-primary-foreground text-xs font-subtitle font-semibold px-2 py-0.5 rounded">{a.cat}</span>
+                          <span className="text-xs text-muted-foreground font-body">{a.date}</span>
+                        </div>
+                        <h3 className="text-base font-heading text-foreground leading-snug">{a.title}</h3>
+                        <p className="text-muted-foreground text-sm font-body mt-2 line-clamp-2">{a.excerpt}</p>
+                      </div>
+                    </Link>
+                  </ScrollReveal>
+                ))}
+              </div>
+            )}
           </div>
+
+          <aside className="space-y-8">
+            <div className="card-equation p-6">
+              <h3 className="text-lg font-heading text-foreground mb-4">Catégories</h3>
+              <div className="space-y-2">
+                {["Conseils", "Guide Technique", "Écologie", "Réglementation", "Économie d'énergie", "Aménagement", "Matériaux", "Diagnostic"].map((c) => (
+                  <div key={c} className="text-sm font-body text-muted-foreground hover:text-primary cursor-pointer transition-colors">{c}</div>
+                ))}
+              </div>
+            </div>
+            <div className="card-equation p-6">
+              <h3 className="text-lg font-heading text-foreground mb-4">Articles Populaires</h3>
+              <div className="space-y-3">
+                {articles.slice(0, 3).map((a) => (
+                  <Link key={a.slug} to={`/blog/${a.slug}`} className="block text-sm font-body text-muted-foreground hover:text-primary transition-colors">
+                    {a.title}
+                  </Link>
+                ))}
+              </div>
+            </div>
+            <div className="bg-primary rounded-xl p-6 text-center">
+              <h3 className="text-lg font-heading text-primary-foreground mb-2">Besoin d'un devis ?</h3>
+              <p className="text-primary-foreground/80 text-sm font-body mb-4">Réponse sous 48h</p>
+              <Link to="/contact" className="btn-noir text-sm">Contactez-nous</Link>
+            </div>
+          </aside>
         </div>
-
-        <aside className="space-y-8">
-          <div className="card-equation p-6">
-            <h3 className="text-lg font-heading text-foreground mb-4">Catégories</h3>
-            <div className="space-y-2">
-              {["Conseils", "Guide Technique", "Écologie", "Réglementation", "Économie d'énergie", "Aménagement", "Matériaux", "Diagnostic"].map((c) => (
-                <div key={c} className="text-sm font-body text-muted-foreground hover:text-primary cursor-pointer transition-colors">{c}</div>
-              ))}
-            </div>
-          </div>
-          <div className="card-equation p-6">
-            <h3 className="text-lg font-heading text-foreground mb-4">Articles Populaires</h3>
-            <div className="space-y-3">
-              {articles.slice(0, 3).map((a) => (
-                <Link key={a.slug} to={`/blog/${a.slug}`} className="block text-sm font-body text-muted-foreground hover:text-primary transition-colors">
-                  {a.title}
-                </Link>
-              ))}
-            </div>
-          </div>
-          <div className="bg-primary rounded-xl p-6 text-center">
-            <h3 className="text-lg font-heading text-primary-foreground mb-2">Besoin d'un devis ?</h3>
-            <p className="text-primary-foreground/80 text-sm font-body mb-4">Réponse sous 48h</p>
-            <Link to="/contact" className="btn-noir text-sm">Contactez-nous</Link>
-          </div>
-        </aside>
-      </div>
-    </section>
-  </>
+      </section>
+    </>
   );
 };
 
