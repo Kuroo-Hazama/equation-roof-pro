@@ -77,15 +77,22 @@ const Users = () => {
     load();
   };
 
-  const changeRole = async (userId: string, _currentRoles: string[], newRole: string) => {
+  const toggleRole = async (userId: string, currentRoles: string[], roleValue: string, checked: boolean) => {
     type Role = "admin" | "editor" | "blog_editor" | "realisations_editor" | "sections_editor" | "recrutement_editor" | "commercial" | "user";
-    const adminRoles = ROLE_OPTIONS.map((r) => r.value) as Role[];
-    await supabase.from("user_roles").delete().eq("user_id", userId).in("role", adminRoles);
-    if (newRole) {
-      const { error } = await supabase.from("user_roles").insert({ user_id: userId, role: newRole as Role });
+    if (checked) {
+      if (currentRoles.includes(roleValue)) return;
+      const { error } = await supabase.from("user_roles").insert({ user_id: userId, role: roleValue as Role });
       if (error) { toast.error(error.message); return; }
+      toast.success("Rôle ajouté");
+    } else {
+      const { error } = await supabase
+        .from("user_roles")
+        .delete()
+        .eq("user_id", userId)
+        .eq("role", roleValue as Role);
+      if (error) { toast.error(error.message); return; }
+      toast.success("Rôle retiré");
     }
-    toast.success("Rôle mis à jour");
     load();
   };
 
@@ -161,10 +168,10 @@ const Users = () => {
             </thead>
             <tbody className="divide-y">
               {users.map((u) => {
-                const currentRole = u.roles.find((r) => ROLE_OPTIONS.some((o) => o.value === r)) || "";
+                const isAdmin = u.roles.includes("admin");
                 return (
                   <tr key={u.id}>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 align-top">
                       <div className="flex items-center gap-2">
                         <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center"><UserIcon className="w-4 h-4 text-primary" /></div>
                         <div>
@@ -173,28 +180,46 @@ const Users = () => {
                         </div>
                       </div>
                     </td>
-                    <td className="px-4 py-3">
-                      {u.roles.length === 0
-                        ? <span className="text-xs text-muted-foreground">Aucun</span>
-                        : <div className="flex flex-wrap gap-1">
-                            {u.roles.map((r) => (
-                              <span key={r} className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded flex items-center gap-1">
-                                <ShieldCheck className="w-3 h-3" /> {ROLE_OPTIONS.find((o) => o.value === r)?.label || r}
-                              </span>
-                            ))}
-                          </div>
-                      }
+                    <td className="px-4 py-3 align-top">
+                      {u.roles.length === 0 ? (
+                        <span className="text-xs text-muted-foreground">Aucun</span>
+                      ) : (
+                        <div className="flex flex-wrap gap-1">
+                          {u.roles.map((r) => (
+                            <span key={r} className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded flex items-center gap-1">
+                              <ShieldCheck className="w-3 h-3" /> {ROLE_OPTIONS.find((o) => o.value === r)?.label || r}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                     </td>
-                    <td className="px-4 py-3 text-right">
-                      <div className="inline-flex gap-2 items-center">
-                        <select
-                          value={currentRole}
-                          onChange={(e) => changeRole(u.id, u.roles, e.target.value)}
-                          className="h-9 rounded-md border border-input bg-background px-2 text-xs"
-                        >
-                          <option value="">— Aucun rôle admin —</option>
-                          {ROLE_OPTIONS.map((r) => <option key={r.value} value={r.value}>{r.label}</option>)}
-                        </select>
+                    <td className="px-4 py-3 align-top">
+                      <div className="space-y-1">
+                        {ROLE_OPTIONS.map((r) => {
+                          const checked = u.roles.includes(r.value);
+                          return (
+                            <label key={r.value} className="flex items-center gap-2 text-xs cursor-pointer">
+                              <input
+                                type="checkbox"
+                                checked={checked}
+                                onChange={(e) => toggleRole(u.id, u.roles, r.value, e.target.checked)}
+                                className="rounded border-input"
+                              />
+                              <span className={isAdmin && r.value !== "admin" ? "text-muted-foreground" : "text-foreground"}>
+                                {r.label}
+                              </span>
+                            </label>
+                          );
+                        })}
+                        {isAdmin && (
+                          <p className="text-[11px] text-muted-foreground italic mt-1">
+                            Admin couvre déjà toutes les permissions
+                          </p>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-4 py-3 text-right align-top">
+                      <div className="inline-flex gap-1 items-center">
                         <Button size="sm" variant="ghost" onClick={() => sendReset(u.id)} title="Envoyer reset mdp">
                           <KeyRound className="w-4 h-4" />
                         </Button>
