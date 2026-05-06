@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { ShieldCheck, User as UserIcon, UserPlus, Trash2 } from "lucide-react";
+import { ShieldCheck, User as UserIcon, UserPlus, Trash2, KeyRound } from "lucide-react";
 import { z } from "zod";
 
 const ROLE_OPTIONS = [
@@ -96,6 +96,18 @@ const Users = () => {
     load();
   };
 
+  const sendReset = async (userId: string) => {
+    const { data, error } = await supabase.functions.invoke("admin-reset-user-password", {
+      body: {
+        user_id: userId,
+        redirect_to: `${window.location.origin}/admin/update-password`,
+      },
+    });
+    const errMsg = error?.message || (data as { error?: string })?.error;
+    if (errMsg) toast.error(errMsg);
+    else toast.success(`Mail de reset envoyé à ${(data as { email?: string })?.email ?? "l'utilisateur"}`);
+  };
+
   return (
     <div>
       <header className="mb-6 flex items-center justify-between">
@@ -183,6 +195,9 @@ const Users = () => {
                           <option value="">— Aucun rôle admin —</option>
                           {ROLE_OPTIONS.map((r) => <option key={r.value} value={r.value}>{r.label}</option>)}
                         </select>
+                        <Button size="sm" variant="ghost" onClick={() => sendReset(u.id)} title="Envoyer reset mdp">
+                          <KeyRound className="w-4 h-4" />
+                        </Button>
                         <Button size="sm" variant="ghost" onClick={() => revoke(u.id)} title="Révoquer tout">
                           <Trash2 className="w-4 h-4 text-destructive" />
                         </Button>
