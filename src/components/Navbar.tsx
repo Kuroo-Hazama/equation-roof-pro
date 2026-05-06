@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ChevronDown, Phone } from "lucide-react";
+import { Menu, X, ChevronDown, Phone, User } from "lucide-react";
 import logoMain from "@/assets/logo-equation-main.png";
 
 const coeurMetier = [
@@ -117,6 +117,16 @@ const Navbar = () => {
               </div>
             ))}
 
+            <Link
+              to="/espace-client"
+              rel="nofollow"
+              className={`flex items-center gap-1 text-sm font-subtitle font-medium transition-colors hover:text-primary ${
+                location.pathname.startsWith("/espace-client") ? "text-primary" : textColor
+              }`}
+            >
+              <User className="w-4 h-4" /> Espace Client
+            </Link>
+
             <Link to="/contact" className="btn-bordeaux text-sm py-2 px-5 rounded-lg">
               Demander un Devis
             </Link>
@@ -165,6 +175,13 @@ const Navbar = () => {
                 )}
               </div>
             ))}
+            <Link
+              to="/espace-client"
+              rel="nofollow"
+              className="flex items-center gap-2 text-primary-foreground text-lg font-heading font-semibold hover:text-primary transition-colors"
+            >
+              <User className="w-5 h-5" /> Espace Client
+            </Link>
             <Link to="/contact" className="btn-bordeaux text-center text-lg mt-4">
               Demander un Devis
             </Link>
