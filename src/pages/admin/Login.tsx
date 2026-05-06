@@ -91,10 +91,15 @@ const AdminLogin = () => {
           </Button>
         </form>
 
-        <div className="text-center mt-6 text-sm">
-          <button onClick={() => setMode(mode === "signin" ? "signup" : "signin")} className="text-primary hover:underline">
+        <div className="text-center mt-6 text-sm space-y-2">
+          <button onClick={() => setMode(mode === "signin" ? "signup" : "signin")} className="text-primary hover:underline block w-full">
             {mode === "signin" ? "Créer un nouveau compte" : "J'ai déjà un compte"}
           </button>
+          {mode === "signin" && (
+            <Link to="/admin/reset-password" className="text-muted-foreground hover:text-primary text-xs block">
+              Mot de passe oublié ?
+            </Link>
+          )}
         </div>
         <div className="text-center mt-4">
           <Link to="/" className="text-xs text-muted-foreground hover:text-primary">← Retour au site</Link>

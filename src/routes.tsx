@@ -96,6 +96,14 @@ export const routes: RouteRecord[] = [
         lazy: lazyDefault(() => import("./pages/admin/Login")),
       },
       {
+        path: "/admin/reset-password",
+        lazy: lazyDefault(() => import("./pages/admin/ResetPassword")),
+      },
+      {
+        path: "/admin/update-password",
+        lazy: lazyDefault(() => import("./pages/admin/UpdatePassword")),
+      },
+      {
         path: "/admin",
         lazy: async () => {
           const [{ default: ProtectedRoute }, { default: AdminLayout }] = await Promise.all([
@@ -154,6 +162,10 @@ export const routes: RouteRecord[] = [
           {
             path: "clients/:id",
             lazy: lazyDefault(() => import("./pages/admin/ClientDocuments")),
+          },
+          {
+            path: "securite",
+            lazy: lazyDefault(() => import("./pages/admin/Security")),
           },
           {
             path: "users",
