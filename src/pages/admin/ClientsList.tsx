@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Plus, FolderOpen, Trash2, Power } from "lucide-react";
+import { Plus, FolderOpen, Trash2, Power, KeyRound } from "lucide-react";
 import { toast } from "sonner";
 import {
   AlertDialog,
@@ -82,6 +82,14 @@ const ClientsList = () => {
       toast.success(c.is_active ? "Accès désactivé" : "Accès activé");
       void load();
     }
+  };
+
+  const sendReset = async (c: ClientUser) => {
+    const { error } = await supabase.auth.resetPasswordForEmail(c.email, {
+      redirectTo: `${window.location.origin}/espace-client/update-password`,
+    });
+    if (error) toast.error(error.message);
+    else toast.success(`Mail de reset envoyé à ${c.email}`);
   };
 
   const deleteClient = async (c: ClientUser) => {
