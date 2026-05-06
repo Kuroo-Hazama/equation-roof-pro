@@ -1,6 +1,6 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { LayoutDashboard, FileText, Hammer, Users, LogOut, ExternalLink, LayoutTemplate, Briefcase, FolderLock } from "lucide-react";
+import { LayoutDashboard, FileText, Hammer, Users, LogOut, ExternalLink, LayoutTemplate, Briefcase, FolderLock, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -11,6 +11,7 @@ const links = [
   { to: "/admin/realisations", icon: Hammer, label: "Réalisations" },
   { to: "/admin/recrutement", icon: Briefcase, label: "Recrutement" },
   { to: "/admin/clients", icon: FolderLock, label: "Espace Clients" },
+  { to: "/admin/securite", icon: ShieldCheck, label: "Sécurité" },
 ];
 
 const AdminLayout = () => {
