@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Plus, FolderOpen, Trash2, Power } from "lucide-react";
+import { Plus, FolderOpen, Trash2, Power, KeyRound } from "lucide-react";
 import { toast } from "sonner";
 import {
   AlertDialog,
@@ -82,6 +82,14 @@ const ClientsList = () => {
       toast.success(c.is_active ? "Accès désactivé" : "Accès activé");
       void load();
     }
+  };
+
+  const sendReset = async (c: ClientUser) => {
+    const { error } = await supabase.auth.resetPasswordForEmail(c.email, {
+      redirectTo: `${window.location.origin}/espace-client/update-password`,
+    });
+    if (error) toast.error(error.message);
+    else toast.success(`Mail de reset envoyé à ${c.email}`);
   };
 
   const deleteClient = async (c: ClientUser) => {
@@ -172,6 +180,9 @@ const ClientsList = () => {
                         </Button>
                         <Button size="sm" variant="ghost" onClick={() => toggleActive(c)} title={c.is_active ? "Désactiver" : "Activer"}>
                           <Power className="w-4 h-4" />
+                        </Button>
+                        <Button size="sm" variant="ghost" onClick={() => sendReset(c)} title="Envoyer reset mdp">
+                          <KeyRound className="w-4 h-4" />
                         </Button>
                         <Button size="sm" variant="ghost" onClick={() => setToDelete(c)} title="Supprimer">
                           <Trash2 className="w-4 h-4 text-destructive" />

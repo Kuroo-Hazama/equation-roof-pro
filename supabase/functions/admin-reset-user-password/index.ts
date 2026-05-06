@@ -39,54 +39,37 @@ Deno.serve(async (req) => {
       });
     }
 
-    const { client_user_id } = (await req.json()) as { client_user_id: string };
-    if (!client_user_id) {
-      return new Response(JSON.stringify({ error: "client_user_id manquant" }), {
+    const body = (await req.json()) as { user_id?: string; redirect_to?: string };
+    if (!body.user_id || !body.redirect_to) {
+      return new Response(JSON.stringify({ error: "user_id et redirect_to requis" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    // Get client row to find auth_user_id
-    const { data: client } = await admin
-      .from("client_users")
-      .select("auth_user_id")
-      .eq("id", client_user_id)
-      .maybeSingle();
-
-    // Step 1: try to purge auth.users FIRST (so email can be reused)
-    if (client?.auth_user_id) {
-      const { error: authErr } = await admin.auth.admin.deleteUser(client.auth_user_id);
-      // Ignore "user not found" — already gone is fine
-      if (authErr && !/not.?found|does not exist/i.test(authErr.message)) {
-        return new Response(
-          JSON.stringify({ error: `Suppression auth échouée : ${authErr.message}` }),
-          { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } },
-        );
-      }
-      // Cleanup user_roles + profiles (no FK cascade on auth.users in this project)
-      await admin.from("user_roles").delete().eq("user_id", client.auth_user_id);
-      await admin.from("profiles").delete().eq("id", client.auth_user_id);
+    // Resolve email from auth.users via admin
+    const { data: u, error: getErr } = await admin.auth.admin.getUserById(body.user_id);
+    if (getErr || !u.user?.email) {
+      return new Response(JSON.stringify({ error: "Utilisateur introuvable" }), {
+        status: 404,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
-    // Step 2: storage cleanup (best-effort) — folder named after client_user_id
-    const { data: files } = await admin.storage.from("client-documents").list(client_user_id);
-    if (files && files.length > 0) {
-      await admin.storage
-        .from("client-documents")
-        .remove(files.map((f) => `${client_user_id}/${f.name}`));
-    }
-
-    // Step 3: delete client_users row (cascades documents)
-    const { error: delErr } = await admin.from("client_users").delete().eq("id", client_user_id);
-    if (delErr) {
-      return new Response(JSON.stringify({ error: delErr.message }), {
+    // Trigger recovery email via admin.generateLink (sends email through configured SMTP)
+    const { error: linkErr } = await admin.auth.admin.generateLink({
+      type: "recovery",
+      email: u.user.email,
+      options: { redirectTo: body.redirect_to },
+    });
+    if (linkErr) {
+      return new Response(JSON.stringify({ error: linkErr.message }), {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    return new Response(JSON.stringify({ ok: true }), {
+    return new Response(JSON.stringify({ ok: true, email: u.user.email }), {
       status: 200,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
