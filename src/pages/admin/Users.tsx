@@ -162,7 +162,8 @@ const Users = () => {
             <thead className="bg-muted/30 text-xs uppercase text-muted-foreground">
               <tr>
                 <th className="px-4 py-3 text-left">Utilisateur</th>
-                <th className="px-4 py-3 text-left">Rôles</th>
+                <th className="px-4 py-3 text-left">Rôles actifs</th>
+                <th className="px-4 py-3 text-left">Permissions</th>
                 <th className="px-4 py-3 text-right">Actions</th>
               </tr>
             </thead>
