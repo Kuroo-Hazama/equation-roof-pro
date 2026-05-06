@@ -77,12 +77,12 @@ const Users = () => {
     load();
   };
 
-  const changeRole = async (userId: string, currentRoles: string[], newRole: string) => {
-    // Supprime les anciens rôles "admin/editor/granulaires" pour ne garder que le nouveau choisi
-    const adminRoles = ROLE_OPTIONS.map((r) => r.value);
+  const changeRole = async (userId: string, _currentRoles: string[], newRole: string) => {
+    type Role = "admin" | "editor" | "blog_editor" | "realisations_editor" | "sections_editor" | "recrutement_editor" | "commercial" | "user";
+    const adminRoles = ROLE_OPTIONS.map((r) => r.value) as Role[];
     await supabase.from("user_roles").delete().eq("user_id", userId).in("role", adminRoles);
     if (newRole) {
-      const { error } = await supabase.from("user_roles").insert({ user_id: userId, role: newRole });
+      const { error } = await supabase.from("user_roles").insert({ user_id: userId, role: newRole as Role });
       if (error) { toast.error(error.message); return; }
     }
     toast.success("Rôle mis à jour");
