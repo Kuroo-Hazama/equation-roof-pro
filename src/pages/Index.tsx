@@ -218,8 +218,6 @@ const HomePage = () => {
         </div>
       </section>
 
-      <HomeCarousel />
-
       {/* Bandeau note Google */}
       <section className="bg-warm border-b border-border">
         <div className="container-main py-4 flex justify-center">
@@ -305,7 +303,9 @@ const HomePage = () => {
           </ScrollReveal>
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <ScrollReveal>
-              <img src={teamImg} alt="Équipe EQUATION étanchéité professionnelle" className="rounded-xl w-full h-80 object-cover" loading="lazy" decoding="async" width={1408} height={768} />
+              <div className="rounded-xl overflow-hidden">
+                <HomeCarousel />
+              </div>
             </ScrollReveal>
             <div className="space-y-6">
               {reasons.map((r, i) => (
