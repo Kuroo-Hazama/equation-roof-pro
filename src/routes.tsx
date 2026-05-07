@@ -61,10 +61,7 @@ export const routes: RouteRecord[] = [
             path: "avis-clients",
             lazy: lazyDefault(() => import("./pages/AvisClients")),
           },
-          {
-            path: "a-propos",
-            lazy: lazyDefault(() => import("./pages/About")),
-          },
+          { path: "a-propos", element: <Navigate to="/entreprise" replace /> },
           {
             path: "contact",
             lazy: lazyDefault(() => import("./pages/Contact")),
