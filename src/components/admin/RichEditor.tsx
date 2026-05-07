@@ -2,9 +2,10 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
-import { Bold, Italic, List, ListOrdered, Heading2, Heading3, Link as LinkIcon, Image as ImageIcon, Quote, Undo, Redo } from "lucide-react";
+import { Bold, Italic, List, ListOrdered, Heading2, Heading3, Link as LinkIcon, Image as ImageIcon, Quote, Undo, Redo, Code } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useEffect } from "react";
+import { Textarea } from "@/components/ui/textarea";
+import { useEffect, useState } from "react";
 import { uploadImage } from "@/lib/uploadImage";
 import { toast } from "sonner";
 
@@ -14,6 +15,9 @@ interface Props {
 }
 
 const RichEditor = ({ value, onChange }: Props) => {
+  const [htmlMode, setHtmlMode] = useState(false);
+  const [rawHtml, setRawHtml] = useState(value);
+
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -24,7 +28,7 @@ const RichEditor = ({ value, onChange }: Props) => {
     onUpdate: ({ editor }) => onChange(editor.getHTML()),
     editorProps: {
       attributes: {
-        class: "prose prose-sm md:prose-base max-w-none focus:outline-none min-h-[300px] px-4 py-3",
+        class: "prose prose-base max-w-none focus:outline-none min-h-[300px] px-4 py-3 prose-h2:mt-8 prose-h2:mb-4 prose-h3:mt-6 prose-h3:mb-3 prose-p:my-4",
       },
     },
   });
@@ -109,8 +113,37 @@ const RichEditor = ({ value, onChange }: Props) => {
         <Btn onClick={() => editor.chain().focus().redo().run()} title="Rétablir">
           <Redo className="w-4 h-4" />
         </Btn>
+        <div className="flex-1" />
+        <Btn
+          onClick={() => {
+            if (!htmlMode) {
+              setRawHtml(editor.getHTML());
+              setHtmlMode(true);
+            } else {
+              editor.commands.setContent(rawHtml);
+              onChange(rawHtml);
+              setHtmlMode(false);
+            }
+          }}
+          active={htmlMode}
+          title="Mode HTML brut"
+        >
+          <Code className="w-4 h-4" />
+        </Btn>
       </div>
-      <EditorContent editor={editor} />
+      {htmlMode ? (
+        <Textarea
+          value={rawHtml}
+          onChange={(e) => {
+            setRawHtml(e.target.value);
+            onChange(e.target.value);
+          }}
+          className="w-full min-h-[600px] p-4 font-mono text-xs border-0 rounded-none focus-visible:ring-0"
+          placeholder="<p>Collez votre HTML ici...</p>"
+        />
+      ) : (
+        <EditorContent editor={editor} />
+      )}
     </div>
   );
 };
