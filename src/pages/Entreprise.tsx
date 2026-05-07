@@ -3,21 +3,16 @@ import PageHero from "@/components/PageHero";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ScrollReveal from "@/components/ScrollReveal";
 import SEO from "@/components/SEO";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { PAGE_SEO } from "@/lib/seo-config";
 import certificationsImg from "@/assets/certifications.png";
 import signatureImg from "@/assets/signature-efficacite.png";
-import teamImg from "@/assets/team-construction.jpg";
+import thierryImg from "@/assets/thierry-meylan.jpg";
 
-const timeline = [
-  { year: "2001", text: "Création d'EQUATION par Thierry Meylan à Cournon-d'Auvergne" },
-  { year: "2005", text: "Obtention de la certification Qualibat" },
-  { year: "2008", text: "Développement de l'activité terrasses bois IPE" },
-  { year: "2012", text: "Premiers chantiers de toitures végétalisées en Auvergne" },
-  { year: "2015", text: "Franchissement du cap des 2 millions d'€ de CA" },
-  { year: "2018", text: "Engagement FFB Puy-de-Dôme, Thierry Meylan administrateur" },
-  { year: "2020", text: "Développement du bureau d'études intégré (DAO 3D)" },
-  { year: "2024", text: "Renouvellement certification Qualibat RGE" },
-  { year: "2026", text: "25 ans d'excellence et plus de 2 000 chantiers réalisés" },
+const memberships = [
+  { abbr: "FFB", full: "Fédération Française du Bâtiment" },
+  { abbr: "CSFE", full: "Chambre Syndicale Française de l'Étanchéité" },
+  { abbr: "NRCA", full: "National Roofing Contractors Association" },
 ];
 
 const reasons = [
@@ -51,7 +46,7 @@ const EntreprisePage = () => (
     <section className="container-main section-padding">
       <div className="grid md:grid-cols-2 gap-12 items-center">
         <ScrollReveal>
-          <img src={teamImg} alt="Équipe EQUATION étanchéité Cournon-d'Auvergne" className="rounded-xl w-full h-96 object-cover" loading="lazy" decoding="async" width={1408} height={768} />
+          <img src={thierryImg} alt="Thierry Meylan, gérant fondateur d'EQUATION Étanchéité, expert toitures terrasses Auvergne" className="rounded-xl w-full h-96 object-cover" loading="lazy" decoding="async" />
         </ScrollReveal>
         <ScrollReveal delay={150}>
           <div>
@@ -63,8 +58,22 @@ const EntreprisePage = () => (
               Nous intervenons dans le Puy-de-Dôme (63), l'Allier (03), la Haute-Loire (43), le Cantal (15), la Nièvre (58) et au-delà sur demande pour les chantiers d'envergure.
             </p>
             <p className="text-muted-foreground font-body leading-relaxed mt-4">
-              Thierry Meylan est administrateur de la <strong className="text-foreground">FFB Puy-de-Dôme</strong> depuis 8 ans, et intervient à l'Université Clermont Auvergne sur le social selling et l'image de marque.
+              Thierry MEYLAN est membre de la Fédération Française du Bâtiment et de la Chambre Syndicale Française de l'Étanchéité depuis plus de vingt ans. Afin de connaître les techniques utilisées dans d'autres pays, il est également membre de la National Roofing Contractors Association.
             </p>
+            <TooltipProvider delayDuration={150}>
+              <div className="flex items-center gap-8 mt-6 grayscale opacity-80">
+                {memberships.map((m) => (
+                  <Tooltip key={m.abbr}>
+                    <TooltipTrigger asChild>
+                      <div className="flex items-center justify-center h-20 px-5 border-2 border-foreground/40 rounded-md font-heading font-bold text-foreground/70 text-xl tracking-wider cursor-default">
+                        {m.abbr}
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>{m.full}</TooltipContent>
+                  </Tooltip>
+                ))}
+              </div>
+            </TooltipProvider>
             <img src={signatureImg} alt="Équation - L'efficacité en Action" className="h-14 w-auto mt-6 opacity-80" loading="lazy" decoding="async" width={312} height={159} />
           </div>
         </ScrollReveal>
@@ -97,26 +106,7 @@ const EntreprisePage = () => (
       </div>
     </section>
 
-    {/* Timeline */}
-    <section className="container-main section-padding">
-      <ScrollReveal>
-        <h2 className="text-foreground text-center mb-12">Notre Histoire</h2>
-      </ScrollReveal>
-      <div className="max-w-2xl mx-auto relative">
-        <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-border md:-translate-x-0.5" />
-        {timeline.map((t, i) => (
-          <ScrollReveal key={t.year} delay={i * 80}>
-            <div className={`relative pl-12 md:pl-0 mb-8 md:flex ${i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"}`}>
-              <div className="absolute left-2 md:left-1/2 w-5 h-5 rounded-full bg-primary border-4 border-background md:-translate-x-2.5 mt-1" />
-              <div className={`md:w-1/2 ${i % 2 === 0 ? "md:pr-10 md:text-right" : "md:pl-10"}`}>
-                <span className="text-primary font-heading font-bold text-lg">{t.year}</span>
-                <p className="text-muted-foreground font-body text-sm mt-1">{t.text}</p>
-              </div>
-            </div>
-          </ScrollReveal>
-        ))}
-      </div>
-    </section>
+    {/* Notre histoire — supprimée */}
 
     {/* Nos Valeurs */}
     <section className="bg-warm section-padding">

@@ -1,6 +1,10 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
+  "redirects": [
+    { "source": "/a-propos", "destination": "/entreprise", "permanent": true },
+    { "source": "/notre-histoire", "destination": "/entreprise", "permanent": true }
+  ],
   "rewrites": [
     { "source": "/admin", "destination": "/index.html" },
     { "source": "/admin/:path*", "destination": "/index.html" },
