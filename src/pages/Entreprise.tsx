@@ -3,21 +3,16 @@ import PageHero from "@/components/PageHero";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ScrollReveal from "@/components/ScrollReveal";
 import SEO from "@/components/SEO";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { PAGE_SEO } from "@/lib/seo-config";
 import certificationsImg from "@/assets/certifications.png";
 import signatureImg from "@/assets/signature-efficacite.png";
-import teamImg from "@/assets/team-construction.jpg";
+import thierryImg from "@/assets/thierry-meylan.jpg";
 
-const timeline = [
-  { year: "2001", text: "Création d'EQUATION par Thierry Meylan à Cournon-d'Auvergne" },
-  { year: "2005", text: "Obtention de la certification Qualibat" },
-  { year: "2008", text: "Développement de l'activité terrasses bois IPE" },
-  { year: "2012", text: "Premiers chantiers de toitures végétalisées en Auvergne" },
-  { year: "2015", text: "Franchissement du cap des 2 millions d'€ de CA" },
-  { year: "2018", text: "Engagement FFB Puy-de-Dôme, Thierry Meylan administrateur" },
-  { year: "2020", text: "Développement du bureau d'études intégré (DAO 3D)" },
-  { year: "2024", text: "Renouvellement certification Qualibat RGE" },
-  { year: "2026", text: "25 ans d'excellence et plus de 2 000 chantiers réalisés" },
+const memberships = [
+  { abbr: "FFB", full: "Fédération Française du Bâtiment" },
+  { abbr: "CSFE", full: "Chambre Syndicale Française de l'Étanchéité" },
+  { abbr: "NRCA", full: "National Roofing Contractors Association" },
 ];
 
 const reasons = [
