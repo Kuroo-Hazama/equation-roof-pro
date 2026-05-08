@@ -61,8 +61,8 @@ const Navbar = () => {
   return (
     <>
       {/* Urgency bar */}
-      <div className="bg-primary text-primary-foreground text-xs sm:text-sm py-1.5 fixed top-0 left-0 right-0 z-50 font-subtitle font-medium overflow-hidden max-w-[100vw]">
-        <div className="container-main px-3 sm:px-6 flex items-center justify-center gap-2 sm:gap-3 flex-wrap">
+      <div className="bg-primary text-primary-foreground text-xs sm:text-sm py-1.5 fixed top-0 left-0 right-0 z-50 font-subtitle font-medium w-full max-w-[100vw] mx-auto overflow-hidden">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col min-[400px]:flex-row items-center justify-center gap-1.5 min-[400px]:gap-3 text-center">
           <div className="text-center">
             <span className="hidden sm:inline">⚡ Urgence infiltration ? Appelez le </span>
             <a href="tel:0473875350" className="underline font-bold whitespace-nowrap">04 73 87 53 50</a>
