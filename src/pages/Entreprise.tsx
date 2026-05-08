@@ -68,15 +68,29 @@ const EntreprisePage = () => (
               Thierry MEYLAN est membre de la Fédération Française du Bâtiment et de la Chambre Syndicale Française de l'Étanchéité depuis plus de vingt ans. Afin de connaître les techniques utilisées dans d'autres pays, il est également membre de la National Roofing Contractors Association.
             </p>
             <TooltipProvider delayDuration={150}>
-              <div className="flex items-center gap-8 mt-6 grayscale opacity-80">
-                {memberships.map((m) => (
-                  <Tooltip key={m.abbr}>
+              <div className="grid grid-cols-3 sm:grid-cols-5 gap-3 sm:gap-4 mt-8">
+                {partners.map((p) => (
+                  <Tooltip key={p.short}>
                     <TooltipTrigger asChild>
-                      <div className="flex items-center justify-center h-20 px-5 border-2 border-foreground/40 rounded-md font-heading font-bold text-foreground/70 text-xl tracking-wider cursor-default">
-                        {m.abbr}
-                      </div>
+                      <a
+                        href={p.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={p.name}
+                        className="flex items-center justify-center bg-white border border-border/60 rounded-lg p-2 sm:p-3 h-16 sm:h-20 transition-shadow hover:shadow-md"
+                      >
+                        <img
+                          src={p.src}
+                          alt={p.alt}
+                          className="h-10 sm:h-[60px] w-auto max-w-full object-contain"
+                          loading="lazy"
+                          decoding="async"
+                          width={512}
+                          height={512}
+                        />
+                      </a>
                     </TooltipTrigger>
-                    <TooltipContent>{m.full}</TooltipContent>
+                    <TooltipContent>{p.name}</TooltipContent>
                   </Tooltip>
                 ))}
               </div>
@@ -104,12 +118,6 @@ const EntreprisePage = () => (
             </ScrollReveal>
           ))}
         </div>
-        <ScrollReveal>
-          <div className="mt-12 flex flex-col items-center">
-            <p className="text-muted-foreground font-body text-sm mb-6">Nos certifications et labels — gages de fiabilité</p>
-            <img src={certificationsImg} alt="Certifications CSFE, Qualibat RGE, FFB" className="max-w-lg w-full h-auto" loading="lazy" decoding="async" width={973} height={178} />
-          </div>
-        </ScrollReveal>
       </div>
     </section>
 
