@@ -7,6 +7,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { PAGE_SEO } from "@/lib/seo-config";
 import signatureImg from "@/assets/signature-efficacite.png";
 import thierryImg from "@/assets/thierry-meylan.jpg";
+import ThierryCarousel from "@/components/ThierryCarousel";
 import ffbLogo from "@/assets/logos/ffb-logo.png";
 import csfeLogo from "@/assets/logos/csfe-logo.png";
 import nrcaLogo from "@/assets/logos/nrca-logo.png";
