@@ -5,14 +5,21 @@ import ScrollReveal from "@/components/ScrollReveal";
 import SEO from "@/components/SEO";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { PAGE_SEO } from "@/lib/seo-config";
-import certificationsImg from "@/assets/certifications.png";
 import signatureImg from "@/assets/signature-efficacite.png";
 import thierryImg from "@/assets/thierry-meylan.jpg";
+import ffbLogo from "@/assets/logos/ffb-logo.png";
+import csfeLogo from "@/assets/logos/csfe-logo.png";
+import nrcaLogo from "@/assets/logos/nrca-logo.png";
+import qualibatLogo from "@/assets/logos/qualibat-logo.png";
+import rgeLogo from "@/assets/logos/rge-logo.png";
 
-const memberships = [
-  { abbr: "FFB", full: "Fédération Française du Bâtiment" },
-  { abbr: "CSFE", full: "Chambre Syndicale Française de l'Étanchéité" },
-  { abbr: "NRCA", full: "National Roofing Contractors Association" },
+// TODO: Remplacer par les vrais logos officiels fournis par Thibaut/Thierry
+const partners = [
+  { src: ffbLogo, name: "Fédération Française du Bâtiment", short: "FFB", url: "https://www.ffbatiment.fr", alt: "Logo Fédération Française du Bâtiment - EQUATION membre depuis plus de 20 ans" },
+  { src: csfeLogo, name: "Chambre Syndicale Française de l'Étanchéité", short: "CSFE", url: "https://www.etancheite.com", alt: "Logo Chambre Syndicale Française de l'Étanchéité - EQUATION membre actif" },
+  { src: nrcaLogo, name: "National Roofing Contractors Association", short: "NRCA", url: "https://www.nrca.net", alt: "Logo National Roofing Contractors Association - EQUATION membre international" },
+  { src: qualibatLogo, name: "Qualibat - Certification Qualité Bâtiment", short: "Qualibat", url: "https://www.qualibat.com", alt: "Logo Qualibat - EQUATION certifié qualité bâtiment" },
+  { src: rgeLogo, name: "Reconnu Garant de l'Environnement", short: "RGE", url: "https://www.faire.gouv.fr", alt: "Logo RGE Reconnu Garant de l'Environnement - EQUATION certifié rénovation énergétique" },
 ];
 
 const reasons = [
@@ -61,15 +68,29 @@ const EntreprisePage = () => (
               Thierry MEYLAN est membre de la Fédération Française du Bâtiment et de la Chambre Syndicale Française de l'Étanchéité depuis plus de vingt ans. Afin de connaître les techniques utilisées dans d'autres pays, il est également membre de la National Roofing Contractors Association.
             </p>
             <TooltipProvider delayDuration={150}>
-              <div className="flex items-center gap-8 mt-6 grayscale opacity-80">
-                {memberships.map((m) => (
-                  <Tooltip key={m.abbr}>
+              <div className="grid grid-cols-3 sm:grid-cols-5 gap-3 sm:gap-4 mt-8">
+                {partners.map((p) => (
+                  <Tooltip key={p.short}>
                     <TooltipTrigger asChild>
-                      <div className="flex items-center justify-center h-20 px-5 border-2 border-foreground/40 rounded-md font-heading font-bold text-foreground/70 text-xl tracking-wider cursor-default">
-                        {m.abbr}
-                      </div>
+                      <a
+                        href={p.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={p.name}
+                        className="flex items-center justify-center bg-white border border-border/60 rounded-lg p-2 sm:p-3 h-16 sm:h-20 transition-shadow hover:shadow-md"
+                      >
+                        <img
+                          src={p.src}
+                          alt={p.alt}
+                          className="h-10 sm:h-[60px] w-auto max-w-full object-contain"
+                          loading="lazy"
+                          decoding="async"
+                          width={512}
+                          height={512}
+                        />
+                      </a>
                     </TooltipTrigger>
-                    <TooltipContent>{m.full}</TooltipContent>
+                    <TooltipContent>{p.name}</TooltipContent>
                   </Tooltip>
                 ))}
               </div>
@@ -97,12 +118,6 @@ const EntreprisePage = () => (
             </ScrollReveal>
           ))}
         </div>
-        <ScrollReveal>
-          <div className="mt-12 flex flex-col items-center">
-            <p className="text-muted-foreground font-body text-sm mb-6">Nos certifications et labels — gages de fiabilité</p>
-            <img src={certificationsImg} alt="Certifications CSFE, Qualibat RGE, FFB" className="max-w-lg w-full h-auto" loading="lazy" decoding="async" width={973} height={178} />
-          </div>
-        </ScrollReveal>
       </div>
     </section>
 
