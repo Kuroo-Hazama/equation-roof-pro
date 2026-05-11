@@ -6,9 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { ShieldCheck, User as UserIcon, UserPlus, Trash2, KeyRound } from "lucide-react";
+import { ShieldCheck, User as UserIcon, UserPlus, Trash2 } from "lucide-react";
 import { z } from "zod";
-import TempPasswordDialog from "@/components/admin/TempPasswordDialog";
+import PasswordResetActions from "@/components/admin/PasswordResetActions";
 
 const ROLE_OPTIONS = [
   { value: "admin", label: "Admin (accès total)" },
