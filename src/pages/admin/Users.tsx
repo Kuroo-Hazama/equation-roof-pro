@@ -213,27 +213,16 @@ const Users = () => {
                       </div>
                     </td>
                     <td className="px-4 py-3 text-right align-top">
-                      <div className="inline-flex flex-col items-end gap-1">
-                        <div className="inline-flex gap-1 items-center">
-                          {callerIsAdmin && (
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              onClick={() => setTempPwTarget({ name: u.full_name || "cet utilisateur", user_id: u.id })}
-                              title="Réinitialiser le mot de passe"
-                            >
-                              <KeyRound className="w-4 h-4" />
-                            </Button>
-                          )}
-                          <Button size="sm" variant="ghost" onClick={() => revoke(u.id)} title="Révoquer tout">
-                            <Trash2 className="w-4 h-4 text-destructive" />
-                          </Button>
-                        </div>
+                      <div className="inline-flex items-center gap-1">
                         {callerIsAdmin && (
-                          <span className="text-[10px] text-muted-foreground italic">
-                            Envoi par mail désactivé (SMTP non configuré)
-                          </span>
+                          <PasswordResetActions
+                            target={{ name: u.full_name || "cet utilisateur", user_id: u.id }}
+                            redirectTo={`${window.location.origin}/admin/update-password`}
+                          />
                         )}
+                        <Button size="sm" variant="ghost" onClick={() => revoke(u.id)} title="Révoquer tout">
+                          <Trash2 className="w-4 h-4 text-destructive" />
+                        </Button>
                       </div>
                     </td>
                   </tr>
