@@ -7,7 +7,7 @@ const corsHeaders = {
 
 const ADMIN_EMAIL = "info@etanche.com";
 const ADMIN_URL = "https://equation-roof-pro.lovable.app/admin/candidatures";
-const FROM = "EQUATION Recrutement <onboarding@resend.dev>";
+const FROM = "EQUATION Recrutement <recrutement@send.digitori.fr>";
 
 function escapeHtml(s: string): string {
   return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]!));
