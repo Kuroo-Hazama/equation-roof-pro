@@ -5,7 +5,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Plus, FolderOpen, Trash2, Power, KeyRound } from "lucide-react";
+import { Plus, FolderOpen, Trash2, Power } from "lucide-react";
 import { toast } from "sonner";
 import {
   AlertDialog,
@@ -18,7 +18,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import CreateClientDialog from "@/components/admin/CreateClientDialog";
-import TempPasswordDialog from "@/components/admin/TempPasswordDialog";
+import PasswordResetActions from "@/components/admin/PasswordResetActions";
 
 interface ClientUser {
   id: string;
