@@ -179,14 +179,10 @@ const ClientsList = () => {
                           <Power className="w-4 h-4" />
                         </Button>
                         {isAdmin && (
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => setTempPwTarget({ name: c.full_name, client_user_id: c.id })}
-                            title="Réinitialiser le mot de passe"
-                          >
-                            <KeyRound className="w-4 h-4" />
-                          </Button>
+                          <PasswordResetActions
+                            target={{ name: c.full_name, client_user_id: c.id }}
+                            redirectTo={`${window.location.origin}/espace-client/update-password`}
+                          />
                         )}
                         <Button size="sm" variant="ghost" onClick={() => setToDelete(c)} title="Supprimer">
                           <Trash2 className="w-4 h-4 text-destructive" />
