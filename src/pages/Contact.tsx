@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Phone, Mail, MapPin, Clock } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 import PageHero from "@/components/PageHero";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ScrollReveal from "@/components/ScrollReveal";
 import SEO from "@/components/SEO";
 import { PAGE_SEO } from "@/lib/seo-config";
+import { supabase } from "@/integrations/supabase/client";
 
 const projectTypes = [
   "Étanchéité toiture terrasse",
