@@ -5,7 +5,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Plus, FolderOpen, Trash2, Power, KeyRound } from "lucide-react";
+import { Plus, FolderOpen, Trash2, Power } from "lucide-react";
 import { toast } from "sonner";
 import {
   AlertDialog,
@@ -18,7 +18,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import CreateClientDialog from "@/components/admin/CreateClientDialog";
-import TempPasswordDialog from "@/components/admin/TempPasswordDialog";
+import PasswordResetActions from "@/components/admin/PasswordResetActions";
 
 interface ClientUser {
   id: string;
@@ -39,7 +39,7 @@ const ClientsList = () => {
   const [loading, setLoading] = useState(true);
   const [createOpen, setCreateOpen] = useState(false);
   const [toDelete, setToDelete] = useState<ClientUser | null>(null);
-  const [tempPwTarget, setTempPwTarget] = useState<{ name: string; client_user_id: string } | null>(null);
+  
 
   const load = async () => {
     setLoading(true);
@@ -179,14 +179,10 @@ const ClientsList = () => {
                           <Power className="w-4 h-4" />
                         </Button>
                         {isAdmin && (
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => setTempPwTarget({ name: c.full_name, client_user_id: c.id })}
-                            title="Réinitialiser le mot de passe"
-                          >
-                            <KeyRound className="w-4 h-4" />
-                          </Button>
+                          <PasswordResetActions
+                            target={{ name: c.full_name, client_user_id: c.id }}
+                            redirectTo={`${window.location.origin}/espace-client/update-password`}
+                          />
                         )}
                         <Button size="sm" variant="ghost" onClick={() => setToDelete(c)} title="Supprimer">
                           <Trash2 className="w-4 h-4 text-destructive" />
@@ -219,8 +215,6 @@ const ClientsList = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-
-      <TempPasswordDialog target={tempPwTarget} onClose={() => setTempPwTarget(null)} />
     </div>
   );
 };

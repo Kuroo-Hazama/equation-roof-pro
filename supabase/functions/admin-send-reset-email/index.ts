@@ -2,40 +2,11 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-function generatePassword(length = 12): string {
-  const upper = "ABCDEFGHJKLMNPQRSTUVWXYZ";
-  const lower = "abcdefghijkmnpqrstuvwxyz";
-  const digits = "23456789";
-  const symbols = "!@#$%&*";
-  const all = upper + lower + digits + symbols;
-  const bytes = new Uint8Array(length);
-  crypto.getRandomValues(bytes);
-  // ensure one of each category
-  const required = [
-    upper[bytes[0] % upper.length],
-    lower[bytes[1] % lower.length],
-    digits[bytes[2] % digits.length],
-    symbols[bytes[3] % symbols.length],
-  ];
-  const rest: string[] = [];
-  for (let i = 4; i < length; i++) rest.push(all[bytes[i] % all.length]);
-  const arr = [...required, ...rest];
-  // shuffle
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr.join("");
-}
-
 Deno.serve(async (req) => {
-  if (req.method === "OPTIONS") {
-    return new Response("ok", { headers: corsHeaders });
-  }
+  if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
   try {
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
@@ -54,7 +25,6 @@ Deno.serve(async (req) => {
     const userClient = createClient(SUPABASE_URL, ANON, {
       global: { headers: { Authorization: authHeader } },
     });
-
     const { data: userData, error: userErr } = await userClient.auth.getUser(token);
     if (userErr || !userData.user) {
       return new Response(JSON.stringify({ error: "Session invalide" }), {
@@ -66,7 +36,6 @@ Deno.serve(async (req) => {
 
     const admin = createClient(SUPABASE_URL, SERVICE_ROLE);
 
-    // Verify caller is admin
     const { data: roles } = await admin
       .from("user_roles")
       .select("role")
@@ -80,34 +49,45 @@ Deno.serve(async (req) => {
     }
 
     const body = await req.json().catch(() => ({}));
-    const { user_id, client_user_id } = body as {
+    const { user_id, client_user_id, redirect_to } = body as {
       user_id?: string;
       client_user_id?: string;
+      redirect_to?: string;
     };
+    if (!redirect_to) {
+      return new Response(JSON.stringify({ error: "redirect_to requis" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
     let targetAuthId: string | null = null;
+    let targetEmail: string | null = null;
 
     if (user_id) {
       targetAuthId = user_id;
+      const { data: u, error: gErr } = await admin.auth.admin.getUserById(user_id);
+      if (gErr || !u.user?.email) {
+        return new Response(JSON.stringify({ error: "Utilisateur introuvable" }), {
+          status: 404,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      targetEmail = u.user.email;
     } else if (client_user_id) {
-      const { data: cu, error: cErr } = await admin
+      const { data: cu } = await admin
         .from("client_users")
-        .select("auth_user_id, email, full_name")
+        .select("auth_user_id, email")
         .eq("id", client_user_id)
         .maybeSingle();
-      if (cErr || !cu) {
+      if (!cu) {
         return new Response(JSON.stringify({ error: "Client introuvable" }), {
           status: 404,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
       targetAuthId = cu.auth_user_id;
-      if (!targetAuthId) {
-        return new Response(
-          JSON.stringify({ error: "Ce client n'a pas encore de compte d'authentification" }),
-          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
-        );
-      }
+      targetEmail = cu.email;
     } else {
       return new Response(JSON.stringify({ error: "user_id ou client_user_id requis" }), {
         status: 400,
@@ -115,13 +95,20 @@ Deno.serve(async (req) => {
       });
     }
 
-    const newPassword = generatePassword(12);
+    if (!targetEmail) {
+      return new Response(JSON.stringify({ error: "Email introuvable pour ce compte" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
-    const { error: updErr } = await admin.auth.admin.updateUserById(targetAuthId, {
-      password: newPassword,
+    // Use anon client to trigger the standard reset flow (sends email through Supabase Auth)
+    const anonClient = createClient(SUPABASE_URL, ANON);
+    const { error: resetErr } = await anonClient.auth.resetPasswordForEmail(targetEmail, {
+      redirectTo: redirect_to,
     });
-    if (updErr) {
-      return new Response(JSON.stringify({ error: updErr.message }), {
+    if (resetErr) {
+      return new Response(JSON.stringify({ error: resetErr.message }), {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
@@ -129,12 +116,12 @@ Deno.serve(async (req) => {
 
     await admin.from("audit_log").insert({
       admin_user_id: callerId,
-      action: "password_set_manually",
+      action: "password_reset_email_sent",
       target_user_id: targetAuthId,
-      metadata: client_user_id ? { client_user_id } : null,
+      metadata: { email: targetEmail, ...(client_user_id ? { client_user_id } : {}) },
     });
 
-    return new Response(JSON.stringify({ password: newPassword }), {
+    return new Response(JSON.stringify({ ok: true, email: targetEmail }), {
       status: 200,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
