@@ -4,7 +4,7 @@ const corsHeaders = {
 };
 
 const ADMIN_EMAIL = "info@etanche.com";
-const FROM = "EQUATION Site <onboarding@resend.dev>";
+const FROM = "EQUATION Site <contact@send.digitori.fr>";
 
 function escapeHtml(s: string): string {
   return String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]!));
