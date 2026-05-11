@@ -165,6 +165,10 @@ export const routes: RouteRecord[] = [
             lazy: lazyDefault(() => import("./pages/admin/JobOfferEditor")),
           },
           {
+            path: "candidatures",
+            lazy: lazyDefault(() => import("./pages/admin/ApplicationsList")),
+          },
+          {
             path: "clients",
             lazy: lazyDefault(() => import("./pages/admin/ClientsList")),
           },
