@@ -88,13 +88,6 @@ const ClientsList = () => {
     }
   };
 
-  const sendReset = async (c: ClientUser) => {
-    const { error } = await supabase.auth.resetPasswordForEmail(c.email, {
-      redirectTo: `${window.location.origin}/espace-client/update-password`,
-    });
-    if (error) toast.error(error.message);
-    else toast.success(`Mail de reset envoyé à ${c.email}`);
-  };
 
   const deleteClient = async (c: ClientUser) => {
     const { data, error } = await supabase.functions.invoke("admin-delete-client", {
