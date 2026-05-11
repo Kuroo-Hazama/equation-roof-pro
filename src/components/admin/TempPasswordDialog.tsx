@@ -70,16 +70,17 @@ const TempPasswordDialog = ({ target, onClose }: Props) => {
       <AlertDialog open onOpenChange={(o) => !o && handleClose()}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Régénérer un mot de passe temporaire</AlertDialogTitle>
+            <AlertDialogTitle>Réinitialiser le mot de passe de {target.name} ?</AlertDialogTitle>
             <AlertDialogDescription>
-              Un nouveau mot de passe va être généré pour <strong>{target.name}</strong>.
-              L'ancien mot de passe sera immédiatement invalidé.
+              Un nouveau mot de passe va être généré pour cet utilisateur. Vous pourrez le copier
+              et le lui transmettre par téléphone, SMS ou WhatsApp. L'utilisateur pourra ensuite
+              le modifier depuis son profil s'il le souhaite.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel disabled={loading}>Annuler</AlertDialogCancel>
             <AlertDialogAction onClick={(e) => { e.preventDefault(); void handleGenerate(); }} disabled={loading}>
-              {loading ? "Génération…" : "Générer"}
+              {loading ? "Réinitialisation…" : "Réinitialiser"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
