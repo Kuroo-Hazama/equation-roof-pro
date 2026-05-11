@@ -39,7 +39,7 @@ const ClientsList = () => {
   const [loading, setLoading] = useState(true);
   const [createOpen, setCreateOpen] = useState(false);
   const [toDelete, setToDelete] = useState<ClientUser | null>(null);
-  const [tempPwTarget, setTempPwTarget] = useState<{ name: string; client_user_id: string } | null>(null);
+  
 
   const load = async () => {
     setLoading(true);
