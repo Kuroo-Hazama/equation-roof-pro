@@ -219,6 +219,8 @@ const ClientsList = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <TempPasswordDialog target={tempPwTarget} onClose={() => setTempPwTarget(null)} />
     </div>
   );
 };
