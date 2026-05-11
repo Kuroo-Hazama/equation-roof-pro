@@ -118,8 +118,8 @@ const ContactPage = () => {
                   <input type="checkbox" required checked={formData.consent} onChange={(e) => setFormData({ ...formData, consent: e.target.checked })} className="mt-1 accent-[hsl(350,72%,34%)]" />
                   <span className="text-sm text-muted-foreground font-body">J'accepte que mes données soient utilisées pour traiter ma demande</span>
                 </label>
-                <button type="submit" className="btn-bordeaux w-full text-lg py-4">
-                  Envoyer ma Demande
+                <button type="submit" disabled={submitting} className="btn-bordeaux w-full text-lg py-4 inline-flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                  {submitting ? (<><Loader2 className="w-4 h-4 animate-spin" /> Envoi en cours…</>) : "Envoyer ma Demande"}
                 </button>
               </form>
             </ScrollReveal>
