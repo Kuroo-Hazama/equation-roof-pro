@@ -26,15 +26,38 @@ const ContactPage = () => {
   const [formData, setFormData] = useState({
     nom: "", prenom: "", email: "", telephone: "", type: "", surface: "", message: "", consent: false,
   });
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     const type = searchParams.get("type");
     if (type) setFormData((prev) => ({ ...prev, type }));
   }, [searchParams]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert("Merci pour votre demande ! Nous vous recontacterons sous 48h.");
+    if (submitting) return;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      toast.error("Adresse email invalide");
+      return;
+    }
+    setSubmitting(true);
+    try {
+      const { error } = await supabase.functions.invoke("send-contact-request", {
+        body: {
+          nom: formData.nom, prenom: formData.prenom, email: formData.email,
+          telephone: formData.telephone, type: formData.type,
+          surface: formData.surface, message: formData.message,
+        },
+      });
+      if (error) throw error;
+      toast.success("Demande envoyée ! Nous vous recontacterons sous 48h.");
+      setFormData({ nom: "", prenom: "", email: "", telephone: "", type: "", surface: "", message: "", consent: false });
+    } catch (err) {
+      console.error(err);
+      toast.error("Erreur lors de l'envoi. Merci de réessayer ou nous contacter au 04 73 87 53 50.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
