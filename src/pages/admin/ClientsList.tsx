@@ -178,9 +178,16 @@ const ClientsList = () => {
                         <Button size="sm" variant="ghost" onClick={() => toggleActive(c)} title={c.is_active ? "Désactiver" : "Activer"}>
                           <Power className="w-4 h-4" />
                         </Button>
-                        <Button size="sm" variant="ghost" onClick={() => sendReset(c)} title="Envoyer reset mdp">
-                          <KeyRound className="w-4 h-4" />
-                        </Button>
+                        {isAdmin && (
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => setTempPwTarget({ name: c.full_name, client_user_id: c.id })}
+                            title="Générer un mot de passe temporaire (envoi mail désactivé)"
+                          >
+                            <KeyRound className="w-4 h-4" />
+                          </Button>
+                        )}
                         <Button size="sm" variant="ghost" onClick={() => setToDelete(c)} title="Supprimer">
                           <Trash2 className="w-4 h-4 text-destructive" />
                         </Button>
