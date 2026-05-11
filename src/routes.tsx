@@ -71,6 +71,10 @@ export const routes: RouteRecord[] = [
             lazy: lazyDefault(() => import("./pages/Recrutement")),
           },
           {
+            path: "recrutement/merci",
+            lazy: lazyDefault(() => import("./pages/RecrutementMerci")),
+          },
+          {
             path: "mentions-legales",
             lazy: lazyDefault(() => import("./pages/MentionsLegales")),
           },
