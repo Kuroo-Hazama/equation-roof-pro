@@ -94,11 +94,12 @@ const TempPasswordDialog = ({ target, onClose }: Props) => {
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <KeyRound className="w-5 h-5 text-primary" /> Mot de passe temporaire généré
+            <KeyRound className="w-5 h-5 text-primary" /> Nouveau mot de passe
           </DialogTitle>
           <DialogDescription>
-            Transmettez ce mot de passe à <strong>{target.name}</strong> par téléphone, SMS ou
-            WhatsApp. Il pourra le changer après sa première connexion.
+            Transmettez ce nouveau mot de passe à <strong>{target.name}</strong> par le moyen de
+            votre choix (téléphone, SMS, WhatsApp). Ce mot de passe est désormais le mot de passe
+            officiel du compte. L'utilisateur peut le modifier à tout moment depuis son profil.
           </DialogDescription>
         </DialogHeader>
 
@@ -109,7 +110,7 @@ const TempPasswordDialog = ({ target, onClose }: Props) => {
         </div>
 
         <p className="text-xs text-destructive font-medium">
-          ⚠️ Ce mot de passe ne sera plus affiché après fermeture de cette fenêtre.
+          ⚠️ Pour des raisons de sécurité, il ne sera plus affiché après fermeture de cette fenêtre.
         </p>
 
         <DialogFooter>
