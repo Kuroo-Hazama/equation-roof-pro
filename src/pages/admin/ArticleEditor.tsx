@@ -8,6 +8,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import RichEditor from "@/components/admin/RichEditor";
 import YouTubeUrlField from "@/components/admin/YouTubeUrlField";
+import KeywordsInput from "@/components/admin/KeywordsInput";
+import { useKeywordSuggestions } from "@/hooks/useKeywordSuggestions";
 import { uploadImage, slugify } from "@/lib/uploadImage";
 import { toast } from "sonner";
 import { ArrowLeft, Save, Send, Image as ImageIcon, X } from "lucide-react";
@@ -35,12 +37,15 @@ const ArticleEditor = () => {
   const [excerpt, setExcerpt] = useState("");
   const [content, setContent] = useState("");
   const [coverUrl, setCoverUrl] = useState("");
+  const [coverAlt, setCoverAlt] = useState("");
+  const [coverKeywords, setCoverKeywords] = useState<string[]>([]);
   const [videoUrl, setVideoUrl] = useState("");
   const [metaTitle, setMetaTitle] = useState("");
   const [metaDescription, setMetaDescription] = useState("");
   const [loading, setLoading] = useState(!isNew);
   const [saving, setSaving] = useState(false);
   const [slugTouched, setSlugTouched] = useState(false);
+  const keywordSuggestions = useKeywordSuggestions();
 
   useEffect(() => {
     if (isNew) return;
@@ -57,6 +62,8 @@ const ArticleEditor = () => {
       setExcerpt(data.excerpt || "");
       setContent(data.content || "");
       setCoverUrl(data.cover_image_url || "");
+      setCoverAlt((data as { cover_alt_text?: string | null }).cover_alt_text || "");
+      setCoverKeywords(((data as { cover_keywords?: string[] | null }).cover_keywords) || []);
       setVideoUrl((data as { video_url?: string | null }).video_url || "");
       setMetaTitle(data.meta_title || "");
       setMetaDescription(data.meta_description || "");
@@ -106,6 +113,8 @@ const ArticleEditor = () => {
       excerpt: excerpt || null,
       content,
       cover_image_url: coverUrl || null,
+      cover_alt_text: coverAlt || null,
+      cover_keywords: coverKeywords,
       video_url: videoUrl.trim() || null,
       meta_title: metaTitle || null,
       meta_description: metaDescription || null,
@@ -189,6 +198,33 @@ const ArticleEditor = () => {
                   onChange={(e) => e.target.files?.[0] && handleCoverUpload(e.target.files[0])}
                 />
               </label>
+            )}
+            {coverUrl && (
+              <div className="mt-3 space-y-2">
+                <div>
+                  <Label className="text-xs">Texte alternatif (SEO) *</Label>
+                  <input
+                    value={coverAlt}
+                    onChange={(e) => setCoverAlt(e.target.value)}
+                    placeholder="Décrivez l'image en une phrase courte"
+                    className={`mt-1 w-full h-9 rounded-md border bg-background px-2 text-sm ${
+                      !coverAlt.trim() ? "border-destructive/60" : "border-input"
+                    }`}
+                  />
+                  <p className="text-[10px] text-muted-foreground mt-0.5">
+                    Important pour Google et l'accessibilité
+                  </p>
+                </div>
+                <div>
+                  <Label className="text-xs">Mots-clés</Label>
+                  <KeywordsInput
+                    value={coverKeywords}
+                    onChange={setCoverKeywords}
+                    suggestions={keywordSuggestions}
+                    className="mt-1"
+                  />
+                </div>
+              </div>
             )}
           </div>
 

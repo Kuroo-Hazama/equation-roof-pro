@@ -7,6 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { uploadImage } from "@/lib/uploadImage";
 import YouTubeUrlField from "@/components/admin/YouTubeUrlField";
+import PhotoSeoFields from "@/components/admin/PhotoSeoFields";
+import { useKeywordSuggestions } from "@/hooks/useKeywordSuggestions";
 import { toast } from "sonner";
 import { ArrowDown, ArrowLeft, ArrowUp, Save, Send, Star, Trash2, Upload, GripVertical } from "lucide-react";
 import { z } from "zod";
@@ -35,6 +37,8 @@ interface Photo {
   id: string;
   url: string;
   caption: string | null;
+  alt_text: string | null;
+  keywords: string[] | null;
   is_favorite: boolean;
   display_order: number;
 }
@@ -43,16 +47,20 @@ const SortablePhoto = ({
   photo,
   canMoveDown,
   canMoveUp,
+  suggestions,
   onSetFavorite,
-  onUpdateCaption,
+  onUpdateField,
+  onCommitField,
   onDelete,
   onMove,
 }: {
   photo: Photo;
   canMoveDown: boolean;
   canMoveUp: boolean;
+  suggestions: string[];
   onSetFavorite: (id: string) => void;
-  onUpdateCaption: (id: string, c: string) => void;
+  onUpdateField: (id: string, patch: Partial<Photo>) => void;
+  onCommitField: (id: string, patch: Partial<Photo>) => void;
   onDelete: (id: string) => void;
   onMove: (id: string, direction: -1 | 1) => void;
 }) => {
@@ -62,7 +70,7 @@ const SortablePhoto = ({
   return (
     <div ref={setNodeRef} style={style} className="bg-card border rounded-lg overflow-hidden group">
       <div className="relative h-40 bg-muted">
-        <img src={photo.url} alt={photo.caption || ""} className="w-full h-full object-cover pointer-events-none" />
+        <img src={photo.url} alt={photo.alt_text || photo.caption || ""} className="w-full h-full object-cover pointer-events-none" />
         <div
           {...attributes}
           {...listeners}
@@ -99,11 +107,17 @@ const SortablePhoto = ({
           <Trash2 className="w-4 h-4" />
         </button>
       </div>
-      <Input
-        value={photo.caption || ""}
-        onChange={(e) => onUpdateCaption(photo.id, e.target.value)}
-        placeholder="Légende (optionnel)"
-        className="border-0 rounded-none text-sm"
+      <PhotoSeoFields
+        altText={photo.alt_text || ""}
+        keywords={photo.keywords || []}
+        caption={photo.caption || ""}
+        suggestions={suggestions}
+        onAltChange={(v) => onUpdateField(photo.id, { alt_text: v })}
+        onAltBlur={(v) => onCommitField(photo.id, { alt_text: v })}
+        onKeywordsChange={(v) => onUpdateField(photo.id, { keywords: v })}
+        onKeywordsCommit={(v) => onCommitField(photo.id, { keywords: v })}
+        onCaptionChange={(v) => onUpdateField(photo.id, { caption: v })}
+        onCaptionBlur={(v) => onCommitField(photo.id, { caption: v })}
       />
     </div>
   );
@@ -113,6 +127,7 @@ const RealisationEditor = () => {
   const { id } = useParams();
   const isNew = !id || id === "new";
   const navigate = useNavigate();
+  const keywordSuggestions = useKeywordSuggestions();
 
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState(CATEGORIES[0]);
@@ -199,12 +214,18 @@ const RealisationEditor = () => {
     toast.success("Photo favorite mise à jour");
   };
 
-  const updateCaption = (photoId: string, caption: string) => {
-    setPhotos(photos.map((p) => (p.id === photoId ? { ...p, caption } : p)));
+  const updatePhoto = (photoId: string, patch: Partial<Photo>) => {
+    setPhotos((prev) => prev.map((p) => (p.id === photoId ? { ...p, ...patch } : p)));
   };
 
-  const saveCaption = async (photoId: string, caption: string) => {
-    await supabase.from("realisation_photos").update({ caption }).eq("id", photoId);
+  const commitPhoto = async (photoId: string, patch: Partial<Photo>) => {
+    const update: { caption?: string | null; alt_text?: string; keywords?: string[] } = {};
+    if ("caption" in patch) update.caption = patch.caption ?? null;
+    if ("alt_text" in patch) update.alt_text = patch.alt_text || "";
+    if ("keywords" in patch) update.keywords = patch.keywords || [];
+    if (!Object.keys(update).length) return;
+    const { error } = await supabase.from("realisation_photos").update(update).eq("id", photoId);
+    if (error) toast.error(error.message);
   };
 
   const deletePhoto = async (photoId: string) => {
@@ -320,17 +341,18 @@ const RealisationEditor = () => {
                 <SortableContext items={photos.map((p) => p.id)} strategy={rectSortingStrategy}>
                   <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
                     {photos.map((p, index) => (
-                      <div key={p.id} onBlur={() => saveCaption(p.id, p.caption || "")}>
-                        <SortablePhoto
-                          photo={p}
-                          canMoveUp={index > 0}
-                          canMoveDown={index < photos.length - 1}
-                          onSetFavorite={setFavorite}
-                          onUpdateCaption={updateCaption}
-                          onDelete={deletePhoto}
-                          onMove={movePhoto}
-                        />
-                      </div>
+                      <SortablePhoto
+                        key={p.id}
+                        photo={p}
+                        canMoveUp={index > 0}
+                        canMoveDown={index < photos.length - 1}
+                        suggestions={keywordSuggestions}
+                        onSetFavorite={setFavorite}
+                        onUpdateField={updatePhoto}
+                        onCommitField={commitPhoto}
+                        onDelete={deletePhoto}
+                        onMove={movePhoto}
+                      />
                     ))}
                   </div>
                 </SortableContext>

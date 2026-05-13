@@ -46,7 +46,9 @@ export type Database = {
           author_id: string | null
           category: string
           content: string
+          cover_alt_text: string | null
           cover_image_url: string | null
+          cover_keywords: string[]
           created_at: string
           excerpt: string | null
           id: string
@@ -63,7 +65,9 @@ export type Database = {
           author_id?: string | null
           category: string
           content?: string
+          cover_alt_text?: string | null
           cover_image_url?: string | null
+          cover_keywords?: string[]
           created_at?: string
           excerpt?: string | null
           id?: string
@@ -80,7 +84,9 @@ export type Database = {
           author_id?: string | null
           category?: string
           content?: string
+          cover_alt_text?: string | null
           cover_image_url?: string | null
+          cover_keywords?: string[]
           created_at?: string
           excerpt?: string | null
           id?: string
@@ -327,32 +333,35 @@ export type Database = {
       }
       realisation_photos: {
         Row: {
-          alt_text: string | null
+          alt_text: string
           caption: string | null
           created_at: string
           display_order: number
           id: string
           is_favorite: boolean
+          keywords: string[]
           realisation_id: string
           url: string
         }
         Insert: {
-          alt_text?: string | null
+          alt_text?: string
           caption?: string | null
           created_at?: string
           display_order?: number
           id?: string
           is_favorite?: boolean
+          keywords?: string[]
           realisation_id: string
           url: string
         }
         Update: {
-          alt_text?: string | null
+          alt_text?: string
           caption?: string | null
           created_at?: string
           display_order?: number
           id?: string
           is_favorite?: boolean
+          keywords?: string[]
           realisation_id?: string
           url?: string
         }
@@ -419,32 +428,35 @@ export type Database = {
       }
       section_photos: {
         Row: {
-          alt_text: string | null
+          alt_text: string
           caption: string | null
           created_at: string
           display_order: number
           id: string
           is_favorite: boolean
+          keywords: string[]
           section_id: string
           url: string
         }
         Insert: {
-          alt_text?: string | null
+          alt_text?: string
           caption?: string | null
           created_at?: string
           display_order?: number
           id?: string
           is_favorite?: boolean
+          keywords?: string[]
           section_id: string
           url: string
         }
         Update: {
-          alt_text?: string | null
+          alt_text?: string
           caption?: string | null
           created_at?: string
           display_order?: number
           id?: string
           is_favorite?: boolean
+          keywords?: string[]
           section_id?: string
           url?: string
         }
