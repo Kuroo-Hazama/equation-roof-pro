@@ -109,6 +109,17 @@ const RealisationDetailPage = () => {
   const seoTitle = `${data.title}${data.location ? " — Étanchéité " + data.location : ""} | EQUATION`;
   const seoDescription = (data.description || `Réalisation EQUATION : ${data.title}`).slice(0, 155);
 
+  const imagesJsonLd = data.images
+    .filter((i) => i.src && !i.src.endsWith("/placeholder.svg"))
+    .map((i) => ({
+      "@context": "https://schema.org",
+      "@type": "ImageObject",
+      name: i.caption || i.alt,
+      description: i.alt,
+      keywords: i.keywords && i.keywords.length ? i.keywords.join(", ") : undefined,
+      contentUrl: i.src,
+    }));
+
   return (
     <>
       <SEO
@@ -122,6 +133,12 @@ const RealisationDetailPage = () => {
           { name: data.title, path: `/realisations/${data.slug ?? data.id}` },
         ]}
       />
+      {imagesJsonLd.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(imagesJsonLd) }}
+        />
+      )}
       <PageHero title={data.title} subtitle={data.category} />
       <Breadcrumbs
         items={[
