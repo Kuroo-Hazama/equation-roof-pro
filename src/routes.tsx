@@ -53,9 +53,10 @@ export const routes: RouteRecord[] = [
           {
             path: "realisations",
             lazy: lazyDefault(() => import("./pages/Realisations")),
-            loader: async () => ({
-              realisations: await fetchPublishedRealisations(),
-            }),
+            loader: safeLoader(
+              async () => ({ realisations: await fetchPublishedRealisations() }),
+              { realisations: [] },
+            ),
           },
           {
             path: "realisations/:slug",
