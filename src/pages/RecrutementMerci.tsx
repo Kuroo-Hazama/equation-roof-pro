@@ -6,9 +6,10 @@ const RecrutementMerci = () => {
   return (
     <>
       <SEO
-        title="Candidature reçue — EQUATION"
-        description="Merci pour votre candidature chez EQUATION."
+        title="Candidature reçue — EQUATION étanchéité"
+        description="Merci pour votre candidature chez EQUATION. Nous avons bien reçu votre dossier et reviendrons vers vous sous 7 jours ouvrés depuis Cournon-d'Auvergne."
         path="/recrutement/merci"
+        noindex
       />
       <section className="container-main section-padding pt-32 min-h-[60vh] flex items-center">
         <div className="max-w-2xl mx-auto text-center">
