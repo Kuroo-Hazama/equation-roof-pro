@@ -194,6 +194,10 @@ export const routes: RouteRecord[] = [
             lazy: lazyDefault(() => import("./pages/admin/ClientDocuments")),
           },
           {
+            path: "medias",
+            lazy: lazyDefault(() => import("./pages/admin/AdminMedias")),
+          },
+          {
             path: "securite",
             lazy: lazyDefault(() => import("./pages/admin/Security")),
           },
