@@ -124,13 +124,13 @@ const SolutionBlock = ({ s, i }: { s: Solution; i: number }) => {
     >
       <div className="container-main">
         <ScrollReveal>
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className={i % 2 === 1 ? "md:order-2" : ""}>
-              <PhotoGallery images={content.images} />
+          <div className="grid min-w-0 gap-8 md:grid-cols-2 md:gap-12 md:items-center">
+            <div className={i % 2 === 1 ? "min-w-0 md:order-2" : "min-w-0"}>
+              <PhotoGallery images={content.images} mainHeightClass="h-56 sm:h-72 md:h-96" />
             </div>
-            <div className={i % 2 === 1 ? "md:order-1" : ""}>
+            <div className={i % 2 === 1 ? "min-w-0 md:order-1" : "min-w-0"}>
               <s.icon className="w-10 h-10 text-primary mb-4" />
-              <h2 className="text-2xl md:text-3xl text-foreground">{content.title}</h2>
+              <h2 className="break-words text-2xl md:text-3xl text-foreground">{content.title}</h2>
               <p className="text-muted-foreground mt-4 font-body leading-relaxed whitespace-pre-line">{content.intro}</p>
               {content.videoUrl && (
                 <div className="mt-6">
