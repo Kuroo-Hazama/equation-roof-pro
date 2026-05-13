@@ -197,4 +197,14 @@
     transform: translateY(-4px);
     box-shadow: var(--shadow-card-hover);
   }
+
+  /* Container responsive standard pour images : garantit
+     qu'aucune image ne déborde et applique un ratio cohérent. */
+  .image-container {
+    @apply relative w-full overflow-hidden;
+  }
+
+  .image-container > img {
+    @apply absolute inset-0 w-full h-full object-cover;
+  }
 }
