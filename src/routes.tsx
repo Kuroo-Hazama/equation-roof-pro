@@ -3,7 +3,21 @@ import type { RouteRecord } from "vite-react-ssg";
 import RootLayout from "./RootLayout";
 import PublicLayout from "./PublicLayout";
 import Index from "./pages/Index";
+import RouteErrorBoundary from "./components/ErrorFallback";
 import { fetchPublishedRealisations, fetchPublishedBlogArticles } from "./lib/data-loaders";
+
+// Wrap loaders so a transient backend failure can never bubble up as
+// "Unexpected Application Error" — the page renders with empty data instead.
+const safeLoader =
+  <T,>(fn: () => Promise<T>, fallback: T) =>
+  async () => {
+    try {
+      return await fn();
+    } catch (err) {
+      console.warn("[route-loader] failed, using fallback:", err);
+      return fallback;
+    }
+  };
 
 // Helper to convert default-exported pages into the named-exports
 // shape that React Router's `lazy` expects.
@@ -17,6 +31,7 @@ const lazyDefault =
 export const routes: RouteRecord[] = [
   {
     Component: RootLayout,
+    ErrorBoundary: RouteErrorBoundary,
     children: [
       {
         path: "/",
@@ -38,9 +53,10 @@ export const routes: RouteRecord[] = [
           {
             path: "realisations",
             lazy: lazyDefault(() => import("./pages/Realisations")),
-            loader: async () => ({
-              realisations: await fetchPublishedRealisations(),
-            }),
+            loader: safeLoader(
+              async () => ({ realisations: await fetchPublishedRealisations() }),
+              { realisations: [] },
+            ),
           },
           {
             path: "realisations/:slug",
@@ -49,9 +65,10 @@ export const routes: RouteRecord[] = [
           {
             path: "blog",
             lazy: lazyDefault(() => import("./pages/Blog")),
-            loader: async () => ({
-              articles: await fetchPublishedBlogArticles(),
-            }),
+            loader: safeLoader(
+              async () => ({ articles: await fetchPublishedBlogArticles() }),
+              { articles: [] },
+            ),
           },
           {
             path: "blog/:slug",
