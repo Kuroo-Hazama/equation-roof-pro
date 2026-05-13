@@ -3,9 +3,17 @@ import { useParams, Link } from "react-router-dom";
 import PageHero from "@/components/PageHero";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ScrollReveal from "@/components/ScrollReveal";
+import SEO from "@/components/SEO";
 import { Phone } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import YouTubePlayer from "@/components/YouTubePlayer";
+
+const truncate = (s: string, max = 158) => {
+  const clean = s.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  if (clean.length <= max) return clean;
+  return clean.slice(0, max - 1).replace(/\s+\S*$/, "") + "…";
+};
+const buildTitle = (t: string) => (t.length <= 60 ? t : t.slice(0, 57).trimEnd() + "…");
 
 type StaticArticle = { title: string; cat: string; date: string; content: string[] };
 
