@@ -65,9 +65,10 @@ export const routes: RouteRecord[] = [
           {
             path: "blog",
             lazy: lazyDefault(() => import("./pages/Blog")),
-            loader: async () => ({
-              articles: await fetchPublishedBlogArticles(),
-            }),
+            loader: safeLoader(
+              async () => ({ articles: await fetchPublishedBlogArticles() }),
+              { articles: [] },
+            ),
           },
           {
             path: "blog/:slug",
