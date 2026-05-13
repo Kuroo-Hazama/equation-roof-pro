@@ -76,6 +76,23 @@
     @apply bg-background text-foreground font-body antialiased;
   }
 
+  /* Global responsive image safety net — empêche tout débordement
+     d'images sur mobile/tablet et conserve le ratio d'origine */
+  img,
+  svg,
+  video,
+  canvas,
+  picture {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Quand une image utilise object-fit: cover et une hauteur fixée
+     en classes utilitaires, on respecte cette hauteur. La règle
+     ci-dessus n'écrase pas les classes h-* de Tailwind car celles-ci
+     sont déclarées dans @layer utilities (priorité supérieure). */
+
   h1, h2, h3 {
     font-family: 'Montserrat', sans-serif;
   }
