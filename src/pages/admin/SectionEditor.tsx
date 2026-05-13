@@ -152,6 +152,7 @@ const SectionEditor = () => {
   const [referenceText, setReferenceText] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
   const [photos, setPhotos] = useState<Photo[]>([]);
+  const keywordSuggestions = useKeywordSuggestions();
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
@@ -222,12 +223,18 @@ const SectionEditor = () => {
     toast.success("Photo favorite mise à jour");
   };
 
-  const updateCaption = (photoId: string, caption: string) => {
-    setPhotos(photos.map((p) => (p.id === photoId ? { ...p, caption } : p)));
+  const updatePhoto = (photoId: string, patch: Partial<Photo>) => {
+    setPhotos((prev) => prev.map((p) => (p.id === photoId ? { ...p, ...patch } : p)));
   };
 
-  const saveCaption = async (photoId: string, caption: string) => {
-    await supabase.from("section_photos").update({ caption }).eq("id", photoId);
+  const commitPhoto = async (photoId: string, patch: Partial<Photo>) => {
+    const update: { caption?: string | null; alt_text?: string; keywords?: string[] } = {};
+    if ("caption" in patch) update.caption = patch.caption ?? null;
+    if ("alt_text" in patch) update.alt_text = patch.alt_text || "";
+    if ("keywords" in patch) update.keywords = patch.keywords || [];
+    if (!Object.keys(update).length) return;
+    const { error } = await supabase.from("section_photos").update(update).eq("id", photoId);
+    if (error) toast.error(error.message);
   };
 
   const deletePhoto = async (photoId: string) => {
@@ -416,9 +423,10 @@ const SectionEditor = () => {
                         canMoveUp={index > 0}
                         canMoveDown={index < photos.length - 1}
                         onSetFavorite={setFavorite}
-                        onUpdateCaption={updateCaption}
+                        suggestions={keywordSuggestions}
+                        onUpdateField={updatePhoto}
+                        onCommitField={commitPhoto}
                         onDelete={deletePhoto}
-                        onBlurCaption={saveCaption}
                         onMove={movePhoto}
                       />
                     ))}
