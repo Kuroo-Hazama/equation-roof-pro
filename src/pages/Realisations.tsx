@@ -131,31 +131,31 @@ const RealisationsPage = () => {
 const ProjectModal = ({ project, onClose }: { project: Realisation; onClose: () => void }) => {
   return (
     <div
-      className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4 overflow-y-auto animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 bg-black/70 flex items-stretch sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200"
       onClick={onClose}
     >
       <div
-        className="bg-background rounded-xl max-w-4xl w-full my-8 shadow-2xl animate-in zoom-in-95 duration-200"
+        className="bg-background sm:rounded-xl max-w-4xl w-full h-full sm:h-auto sm:max-h-[calc(100vh-4rem)] shadow-2xl animate-in zoom-in-95 duration-200 flex flex-col overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between p-5 border-b border-border">
-          <div>
-            <span className="bg-primary text-primary-foreground text-xs font-subtitle font-semibold px-3 py-1 rounded-full">
+        <div className="flex items-start justify-between gap-3 p-4 sm:p-5 border-b border-border shrink-0">
+          <div className="min-w-0 flex-1">
+            <span className="inline-block bg-primary text-primary-foreground text-xs font-subtitle font-semibold px-3 py-1 rounded-full">
               {project.category}
             </span>
-            <h2 className="text-xl md:text-2xl font-heading text-foreground mt-2">{project.title}</h2>
+            <h2 className="text-lg sm:text-xl md:text-2xl font-heading text-foreground mt-2 break-words">{project.title}</h2>
           </div>
           <button
             type="button"
             onClick={onClose}
             aria-label="Fermer"
-            className="text-muted-foreground hover:text-foreground transition-colors p-2"
+            className="text-muted-foreground hover:text-foreground transition-colors p-2 shrink-0 -mr-2 -mt-1"
           >
             <X className="w-6 h-6" />
           </button>
         </div>
 
-        <div className="p-5">
+        <div className="p-4 sm:p-5 overflow-y-auto">
           {project.videoUrl && (
             <div className="mb-6">
               <p className="text-xs font-subtitle font-semibold uppercase tracking-wide mb-2 text-center" style={{ color: "#96162B" }}>
