@@ -38,6 +38,7 @@ interface Photo {
   url: string;
   caption: string | null;
   alt_text: string | null;
+  description: string | null;
   keywords: string[] | null;
   is_favorite: boolean;
   display_order: number;
@@ -111,6 +112,7 @@ const SortablePhoto = ({
         altText={photo.alt_text || ""}
         keywords={photo.keywords || []}
         caption={photo.caption || ""}
+        description={photo.description || ""}
         suggestions={suggestions}
         onAltChange={(v) => onUpdateField(photo.id, { alt_text: v })}
         onAltBlur={(v) => onCommitField(photo.id, { alt_text: v })}
@@ -118,6 +120,8 @@ const SortablePhoto = ({
         onKeywordsCommit={(v) => onCommitField(photo.id, { keywords: v })}
         onCaptionChange={(v) => onUpdateField(photo.id, { caption: v })}
         onCaptionBlur={(v) => onCommitField(photo.id, { caption: v })}
+        onDescriptionChange={(v) => onUpdateField(photo.id, { description: v })}
+        onDescriptionBlur={(v) => onCommitField(photo.id, { description: v })}
       />
     </div>
   );
@@ -219,10 +223,11 @@ const RealisationEditor = () => {
   };
 
   const commitPhoto = async (photoId: string, patch: Partial<Photo>) => {
-    const update: { caption?: string | null; alt_text?: string; keywords?: string[] } = {};
+    const update: { caption?: string | null; alt_text?: string; keywords?: string[]; description?: string } = {};
     if ("caption" in patch) update.caption = patch.caption ?? null;
     if ("alt_text" in patch) update.alt_text = patch.alt_text || "";
     if ("keywords" in patch) update.keywords = patch.keywords || [];
+    if ("description" in patch) update.description = patch.description || "";
     if (!Object.keys(update).length) return;
     const { error } = await supabase.from("realisation_photos").update(update).eq("id", photoId);
     if (error) toast.error(error.message);
