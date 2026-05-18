@@ -47,6 +47,7 @@ export type Database = {
           category: string
           content: string
           cover_alt_text: string | null
+          cover_description: string
           cover_image_url: string | null
           cover_keywords: string[]
           created_at: string
@@ -66,6 +67,7 @@ export type Database = {
           category: string
           content?: string
           cover_alt_text?: string | null
+          cover_description?: string
           cover_image_url?: string | null
           cover_keywords?: string[]
           created_at?: string
@@ -85,6 +87,7 @@ export type Database = {
           category?: string
           content?: string
           cover_alt_text?: string | null
+          cover_description?: string
           cover_image_url?: string | null
           cover_keywords?: string[]
           created_at?: string
@@ -336,6 +339,7 @@ export type Database = {
           alt_text: string
           caption: string | null
           created_at: string
+          description: string
           display_order: number
           id: string
           is_favorite: boolean
@@ -348,6 +352,7 @@ export type Database = {
           alt_text?: string
           caption?: string | null
           created_at?: string
+          description?: string
           display_order?: number
           id?: string
           is_favorite?: boolean
@@ -360,6 +365,7 @@ export type Database = {
           alt_text?: string
           caption?: string | null
           created_at?: string
+          description?: string
           display_order?: number
           id?: string
           is_favorite?: boolean
@@ -434,6 +440,7 @@ export type Database = {
           alt_text: string
           caption: string | null
           created_at: string
+          description: string
           display_order: number
           id: string
           is_favorite: boolean
@@ -446,6 +453,7 @@ export type Database = {
           alt_text?: string
           caption?: string | null
           created_at?: string
+          description?: string
           display_order?: number
           id?: string
           is_favorite?: boolean
@@ -458,6 +466,7 @@ export type Database = {
           alt_text?: string
           caption?: string | null
           created_at?: string
+          description?: string
           display_order?: number
           id?: string
           is_favorite?: boolean
