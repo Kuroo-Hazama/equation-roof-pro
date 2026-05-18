@@ -82,7 +82,7 @@ export async function fetchPublishedRealisations(): Promise<RealisationCardData[
 export async function fetchPublishedBlogArticles(): Promise<BlogArticleData[]> {
   const { data, error } = await supabase
     .from("blog_articles")
-    .select("slug,title,category,excerpt,cover_image_url,cover_alt_text,cover_keywords,published_at,updated_at")
+    .select("slug,title,category,excerpt,cover_image_url,cover_alt_text,cover_description,cover_keywords,published_at,updated_at")
     .eq("status", "published")
     .order("published_at", { ascending: false });
   if (error || !data) return [];
@@ -96,6 +96,7 @@ export async function fetchPublishedBlogArticles(): Promise<BlogArticleData[]> {
       (a as { updated_at?: string | null }).updated_at,
     ) || null,
     coverAltText: (a as { cover_alt_text?: string | null }).cover_alt_text || null,
+    coverDescription: (a as { cover_description?: string | null }).cover_description || null,
     coverKeywords: ((a as { cover_keywords?: string[] | null }).cover_keywords) || [],
     publishedAt: a.published_at || null,
   }));
