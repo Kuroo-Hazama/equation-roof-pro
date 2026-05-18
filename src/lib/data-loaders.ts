@@ -23,6 +23,7 @@ export type BlogArticleData = {
   excerpt: string;
   coverImageUrl: string | null;
   coverAltText: string | null;
+  coverDescription: string | null;
   coverKeywords: string[];
   publishedAt: string | null;
 };
@@ -41,7 +42,7 @@ export async function fetchPublishedRealisations(): Promise<RealisationCardData[
   const ids = reals.map((r) => r.id);
   const { data: photos } = await supabase
     .from("realisation_photos")
-    .select("realisation_id,url,alt_text,caption,keywords,display_order,is_favorite,updated_at,created_at")
+    .select("realisation_id,url,alt_text,caption,description,keywords,display_order,is_favorite,updated_at,created_at")
     .in("realisation_id", ids)
     .order("is_favorite", { ascending: false })
     .order("display_order", { ascending: true });
@@ -58,6 +59,7 @@ export async function fetchPublishedRealisations(): Promise<RealisationCardData[
           src: withCacheBust(p.url, version),
           alt: p.alt_text || r.title,
           caption: p.caption || undefined,
+          description: (p as { description?: string | null }).description || undefined,
           keywords: (p as { keywords?: string[] | null }).keywords || undefined,
         };
       });
@@ -80,7 +82,7 @@ export async function fetchPublishedRealisations(): Promise<RealisationCardData[
 export async function fetchPublishedBlogArticles(): Promise<BlogArticleData[]> {
   const { data, error } = await supabase
     .from("blog_articles")
-    .select("slug,title,category,excerpt,cover_image_url,cover_alt_text,cover_keywords,published_at,updated_at")
+    .select("slug,title,category,excerpt,cover_image_url,cover_alt_text,cover_description,cover_keywords,published_at,updated_at")
     .eq("status", "published")
     .order("published_at", { ascending: false });
   if (error || !data) return [];
@@ -94,6 +96,7 @@ export async function fetchPublishedBlogArticles(): Promise<BlogArticleData[]> {
       (a as { updated_at?: string | null }).updated_at,
     ) || null,
     coverAltText: (a as { cover_alt_text?: string | null }).cover_alt_text || null,
+    coverDescription: (a as { cover_description?: string | null }).cover_description || null,
     coverKeywords: ((a as { cover_keywords?: string[] | null }).cover_keywords) || [],
     publishedAt: a.published_at || null,
   }));

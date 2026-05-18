@@ -38,6 +38,7 @@ const ArticleEditor = () => {
   const [content, setContent] = useState("");
   const [coverUrl, setCoverUrl] = useState("");
   const [coverAlt, setCoverAlt] = useState("");
+  const [coverDescription, setCoverDescription] = useState("");
   const [coverKeywords, setCoverKeywords] = useState<string[]>([]);
   const [videoUrl, setVideoUrl] = useState("");
   const [metaTitle, setMetaTitle] = useState("");
@@ -63,6 +64,7 @@ const ArticleEditor = () => {
       setContent(data.content || "");
       setCoverUrl(data.cover_image_url || "");
       setCoverAlt((data as { cover_alt_text?: string | null }).cover_alt_text || "");
+      setCoverDescription((data as { cover_description?: string | null }).cover_description || "");
       setCoverKeywords(((data as { cover_keywords?: string[] | null }).cover_keywords) || []);
       setVideoUrl((data as { video_url?: string | null }).video_url || "");
       setMetaTitle(data.meta_title || "");
@@ -114,6 +116,7 @@ const ArticleEditor = () => {
       content,
       cover_image_url: coverUrl || null,
       cover_alt_text: coverAlt || null,
+      cover_description: coverDescription || "",
       cover_keywords: coverKeywords,
       video_url: videoUrl.trim() || null,
       meta_title: metaTitle || null,
@@ -214,6 +217,25 @@ const ArticleEditor = () => {
                   <p className="text-[10px] text-muted-foreground mt-0.5">
                     Important pour Google et l'accessibilité
                   </p>
+                </div>
+                <div>
+                  <Label className="text-xs">Description complète (SEO)</Label>
+                  <textarea
+                    value={coverDescription}
+                    onChange={(e) => setCoverDescription(e.target.value)}
+                    placeholder="Décrivez l'image en détail : ce qu'elle montre, le contexte, l'intérêt pour le visiteur"
+                    rows={3}
+                    maxLength={600}
+                    className="mt-1 w-full rounded-md border border-input bg-background px-2 py-1.5 text-sm resize-y min-h-[72px]"
+                  />
+                  <div className="flex items-center justify-between mt-0.5">
+                    <p className="text-[10px] text-muted-foreground">
+                      Optionnel — idéal entre 100 et 300 caractères
+                    </p>
+                    <p className="text-[10px] font-mono text-muted-foreground">
+                      {coverDescription.length}/500
+                    </p>
+                  </div>
                 </div>
                 <div>
                   <Label className="text-xs">Mots-clés</Label>
