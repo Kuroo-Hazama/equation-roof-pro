@@ -6,6 +6,7 @@ export type GalleryImage = {
   src: string;
   alt: string;
   caption?: string;
+  description?: string;
   keywords?: string[];
 };
 

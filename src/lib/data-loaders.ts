@@ -23,6 +23,7 @@ export type BlogArticleData = {
   excerpt: string;
   coverImageUrl: string | null;
   coverAltText: string | null;
+  coverDescription: string | null;
   coverKeywords: string[];
   publishedAt: string | null;
 };
@@ -41,7 +42,7 @@ export async function fetchPublishedRealisations(): Promise<RealisationCardData[
   const ids = reals.map((r) => r.id);
   const { data: photos } = await supabase
     .from("realisation_photos")
-    .select("realisation_id,url,alt_text,caption,keywords,display_order,is_favorite,updated_at,created_at")
+    .select("realisation_id,url,alt_text,caption,description,keywords,display_order,is_favorite,updated_at,created_at")
     .in("realisation_id", ids)
     .order("is_favorite", { ascending: false })
     .order("display_order", { ascending: true });
@@ -58,6 +59,7 @@ export async function fetchPublishedRealisations(): Promise<RealisationCardData[
           src: withCacheBust(p.url, version),
           alt: p.alt_text || r.title,
           caption: p.caption || undefined,
+          description: (p as { description?: string | null }).description || undefined,
           keywords: (p as { keywords?: string[] | null }).keywords || undefined,
         };
       });
