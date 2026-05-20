@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ChevronDown, Phone, User } from "lucide-react";
 import logoMain from "@/assets/logo-equation-main.png";
+import logoDark from "@/assets/equation-logo.png";
 
 const coeurMetier = [
   { label: "Isolation Thermique", href: "/coeur-de-metier#isolation" },
