@@ -68,15 +68,20 @@ const EntreprisePage = () => (
             <p className="text-muted-foreground font-body leading-relaxed mt-4">
               Thierry MEYLAN est membre de la Fédération Française du Bâtiment et de la Chambre Syndicale Française de l'Étanchéité depuis plus de vingt ans. Afin de connaître les techniques utilisées dans d'autres pays, il est également membre de la National Roofing Contractors Association.
             </p>
-            <img
-              src={certificationsImg}
-              alt="Certifications CSFE, NRCA Member, Qualibat, Reconnu Grenelle Environnement"
-              className="mt-8 max-w-md w-full h-auto"
-              loading="lazy"
-              decoding="async"
-              width={973}
-              height={178}
-            />
+            <div className="mt-8 grid grid-cols-3 sm:grid-cols-5 gap-4 items-center">
+              {certifications.map((c) => (
+                <a
+                  key={c.alt}
+                  href={c.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center p-2 hover:opacity-80 transition-opacity"
+                  aria-label={c.alt}
+                >
+                  <img src={c.src} alt={c.alt} className="max-h-16 w-auto object-contain" loading="lazy" decoding="async" />
+                </a>
+              ))}
+            </div>
             <img src={signatureImg} alt="Équation - L'efficacité en Action" className="h-14 w-auto mt-6 opacity-80" loading="lazy" decoding="async" width={312} height={159} />
           </div>
         </ScrollReveal>
