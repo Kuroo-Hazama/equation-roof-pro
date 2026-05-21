@@ -162,7 +162,7 @@ const ContactPage = () => {
             </ScrollReveal>
 
             <ScrollReveal delay={350}>
-              <a href="https://share.google/gzbbMMOG3ENd5qnbt" target="_blank" rel="noopener" className="block rounded-xl overflow-hidden h-48 bg-muted">
+              <a href="https://share.google/gzbbMMOG3ENd5qnbt" target="_top" rel="noopener" className="block rounded-xl overflow-hidden h-48 bg-muted">
                 <iframe
                   src="https://www.google.com/maps?q=EQUATION+74+avenue+du+Midi+63800+Cournon-d'Auvergne&output=embed"
                   width="100%"

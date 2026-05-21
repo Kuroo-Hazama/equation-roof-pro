@@ -235,7 +235,7 @@ const HomePage = () => {
         <div className="container-main py-4 flex justify-center">
           <a
             href={googleUrl}
-            target="_blank"
+            target="_top"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-3 bg-card border border-border rounded-full px-5 py-2.5 shadow-sm hover:shadow-md transition-all group"
           >
