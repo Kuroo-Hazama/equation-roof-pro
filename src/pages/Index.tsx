@@ -139,6 +139,8 @@ const clients = [
 
 const HomePage = () => {
   const [projects, setProjects] = useState<HomeProject[]>([]);
+  const { data: google, googleUrl } = useGoogleReviews();
+
 
   useEffect(() => {
     (async () => {
