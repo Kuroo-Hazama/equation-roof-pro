@@ -12,6 +12,7 @@ const teamImg = "/realisations/cpam-1.jpg";
 import certificationsImg from "@/assets/certifications.png";
 import HomeCarousel from "@/components/HomeCarousel";
 import { useEffect, useRef, useState } from "react";
+import { useGoogleReviews } from "@/hooks/useGoogleReviews";
 
 // Counter: initialise à la valeur finale pour que le SSR rende la vraie
 // valeur dans le HTML (SEO + no-JS). useEffect ne s'exécute pas en SSR,
