@@ -162,18 +162,17 @@ const ContactPage = () => {
             </ScrollReveal>
 
             <ScrollReveal delay={350}>
-              <div className="rounded-xl overflow-hidden h-48 bg-muted flex items-center justify-center">
+              <a href="https://share.google/gzbbMMOG3ENd5qnbt" target="_blank" rel="noopener" className="block rounded-xl overflow-hidden h-48 bg-muted">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2810.5!2d3.183!3d45.733!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDXCsDQ0JzAuMCJOIDPCsDExJzAuMCJF!5e0!3m2!1sfr!2sfr!4v1"
+                  src="https://www.google.com/maps?q=EQUATION+74+avenue+du+Midi+63800+Cournon-d'Auvergne&output=embed"
                   width="100%"
                   height="100%"
-                  style={{ border: 0 }}
-                  allowFullScreen
+                  style={{ border: 0, pointerEvents: "none" }}
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                   title="EQUATION Cournon-d'Auvergne"
                 />
-              </div>
+              </a>
             </ScrollReveal>
           </div>
         </div>
