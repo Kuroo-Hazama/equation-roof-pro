@@ -48,7 +48,7 @@ const testimonials = [
 ];
 
 const AvisClientsPage = () => {
-  const { data: google, googleUrl } = useGoogleReviews();
+  const { data: google, googleUrl, reviewUrl } = useGoogleReviews();
 
 
   return (
