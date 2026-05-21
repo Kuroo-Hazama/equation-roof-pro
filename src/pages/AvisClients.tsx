@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Star, Quote } from "lucide-react";
 import { Link } from "react-router-dom";
 import PageHero from "@/components/PageHero";
@@ -5,6 +6,21 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import ScrollReveal from "@/components/ScrollReveal";
 import SEO from "@/components/SEO";
 import { PAGE_SEO } from "@/lib/seo-config";
+import { supabase } from "@/integrations/supabase/client";
+
+type GoogleReview = {
+  author: string;
+  photo: string | null;
+  rating: number;
+  text: string;
+  relativeTime: string;
+};
+type GoogleData = {
+  rating: number | null;
+  userRatingCount: number;
+  googleMapsUri: string | null;
+  reviews: GoogleReview[];
+};
 
 const stats = [
   { value: "25+", label: "Années de confiance" },
