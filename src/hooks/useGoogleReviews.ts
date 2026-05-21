@@ -35,6 +35,8 @@ export function useGoogleReviews() {
     });
   }, []);
 
-  const googleUrl = data?.googleMapsUri ?? FALLBACK_URL;
-  return { data, googleUrl };
+  const googleUrl = PLACE_URL;
+  const reviewUrl = REVIEW_URL;
+  return { data, googleUrl, reviewUrl };
+}
 }
