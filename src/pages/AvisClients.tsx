@@ -235,6 +235,7 @@ const AvisClientsPage = () => {
       </div>
     </section>
   </>
-);
+  );
+};
 
 export default AvisClientsPage;
