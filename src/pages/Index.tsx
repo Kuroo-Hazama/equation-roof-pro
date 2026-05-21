@@ -12,6 +12,7 @@ const teamImg = "/realisations/cpam-1.jpg";
 import certificationsImg from "@/assets/certifications.png";
 import HomeCarousel from "@/components/HomeCarousel";
 import { useEffect, useRef, useState } from "react";
+import { useGoogleReviews } from "@/hooks/useGoogleReviews";
 
 // Counter: initialise à la valeur finale pour que le SSR rende la vraie
 // valeur dans le HTML (SEO + no-JS). useEffect ne s'exécute pas en SSR,
@@ -138,6 +139,8 @@ const clients = [
 
 const HomePage = () => {
   const [projects, setProjects] = useState<HomeProject[]>([]);
+  const { data: google, googleUrl } = useGoogleReviews();
+
 
   useEffect(() => {
     (async () => {
@@ -231,17 +234,17 @@ const HomePage = () => {
       <section className="bg-warm border-b border-border">
         <div className="container-main py-4 flex justify-center">
           <a
-            href="#"
+            href={googleUrl}
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-3 bg-card border border-border rounded-full px-5 py-2.5 shadow-sm hover:shadow-md transition-all group"
           >
             <span className="text-primary text-lg leading-none">★</span>
             <span className="font-subtitle font-semibold text-foreground text-sm">
-              4,9/5
+              {google?.rating ? google.rating.toFixed(1).replace(".", ",") : "5,0"}/5
             </span>
             <span className="text-muted-foreground text-sm font-body">
-              — 12 avis Google
+              — {google?.userRatingCount ?? 0} avis Google
             </span>
             <span className="text-primary text-xs font-subtitle font-semibold group-hover:underline">
               Voir →
@@ -249,6 +252,7 @@ const HomePage = () => {
           </a>
         </div>
       </section>
+
       <section className="bg-noir section-padding">
         <div className="container-main grid grid-cols-2 md:grid-cols-4 gap-8">
           <Counter target={25} suffix="+" label="Années d'expérience" />
