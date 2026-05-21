@@ -79,7 +79,7 @@ const AvisClientsPage = () => {
               </p>
             </div>
           </div>
-          <a href={googleUrl} target="_blank" rel="noopener noreferrer" className="btn-bordeaux">
+          <a href={googleUrl} target="_top" rel="noopener noreferrer" className="btn-bordeaux">
             Voir sur Google
           </a>
         </div>
@@ -143,7 +143,7 @@ const AvisClientsPage = () => {
             <CarouselNext className="hidden md:flex" />
           </Carousel>
           <div className="text-center mt-10">
-            <a href={googleUrl} target="_blank" rel="noopener noreferrer" className="btn-bordeaux inline-block">
+            <a href={googleUrl} target="_top" rel="noopener noreferrer" className="btn-bordeaux inline-block">
               Voir tous les avis sur Google
             </a>
           </div>
@@ -208,7 +208,7 @@ const AvisClientsPage = () => {
         </p>
         <a
           href={reviewUrl}
-          target="_blank"
+          target="_top"
           rel="noopener noreferrer"
           className="btn-bordeaux inline-block"
         >
