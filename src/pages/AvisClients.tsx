@@ -48,15 +48,8 @@ const testimonials = [
 ];
 
 const AvisClientsPage = () => {
-  const [google, setGoogle] = useState<GoogleData | null>(null);
+  const { data: google, googleUrl } = useGoogleReviews();
 
-  useEffect(() => {
-    supabase.functions.invoke("google-reviews").then(({ data, error }) => {
-      if (!error && data) setGoogle(data as GoogleData);
-    });
-  }, []);
-
-  const googleUrl = google?.googleMapsUri ?? "https://www.google.com/search?q=EQUATION+étanchéité+Cournon-d'Auvergne";
 
   return (
   <>
